@@ -37,19 +37,19 @@
                             </tr>
                             </thead>
                             <tbody>
-
+{{--@dd($stuffs)--}}
                             @foreach($stuffs as $stuff)
                                 <tr>
                                     <th scope="row">{{$loop->iteration}}</th>
                                     <td>{{$stuff->nama_barang}}</td>
-                                    <td>{{$stuff->harga}}</td>
+                                    <td>{{$stuff->nama_kategori}}</td>
                                     <td>{{$stuff->jumlah_stok}}</td>
-                                    <td>{{$stuff->id_kategori}}</td>
-                                    <td>{{$stuff->id_satuan}}</td>
+                                    <td>{{$stuff->nama_satuan}}</td>
+                                    <td>Rp {{$stuff->harga}}</td>
                                     <td>
-                                        <a href="{{url('employees/'.$stuff->id.'/edit')}}"><span
+                                        <a href="{{url('stuffs/'.$stuff->id.'/edit')}}"><span
                                                 class="btn btn-primary">Edit</span></a>
-                                        <form action="/employees/{{$stuff->id}}" method="post" class="d-inline">
+                                        <form action="/stuffs/{{$stuff->id}}" method="post" class="d-inline">
                                             @method('delete')
                                             @csrf
                                             <button class="btn btn-danger">Hapus</button>

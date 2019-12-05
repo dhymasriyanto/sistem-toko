@@ -32,6 +32,7 @@ Route::get('/', 'PagesController@home');
 Route::resource('employees', 'EmployeesController');
 Route::resource('stuffs', 'StuffsController');
 
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
