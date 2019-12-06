@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Karyawan')
+@section('title', 'Pengguna')
 
 @section('content')
     <div class="container-fluid p-0">
@@ -19,36 +19,38 @@
                     </div>
                 @endif
                 <h1 class="h3 mb-3">
-                    Daftar Karyawan
+                    Daftar Pengguna
                 </h1>
                 <div class="card">
                     <div class="card-body">
-                        <a href="/employees/create" class="btn btn-primary my-3">Tambah</a>
-                        <table class="table table-responsive">
+                        <a href="/users/create" class="btn btn-primary my-3">Tambah</a>
+                        <table class="table table-responsive table_id display">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Nama Depan</th>
-                                <th scope="col">Nama Belakang</th>
-                                <th scope="col">Tanggal Lahir</th>
-                                <th scope="col">Tempat Lahir</th>
-                                <th scope="col">Nomer HP</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Level Akses</th>
                                 <th scope="col">Aksi</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($employees as $employee)
+                            @foreach($users as $user)
                                 <tr>
-                                    <th scope="row">{{$loop->iteration}}</th>
-                                    <td>{{$employee->nama_depan}}</td>
-                                    <td>{{$employee->nama_belakang}}</td>
-                                    <td>{{$employee->tempat_lahir}}</td>
-                                    <td>{{$employee->tanggal_lahir}}</td>
-                                    <td>{{$employee->nomer_hp}}</td>
+                                    <td scope="row">{{$loop->iteration}}</td>
+                                    <td>{{$user->name}}</td>
+                                    <td>{{$user->username}}</td>
                                     <td>
-                                        <a href="{{url('employees/'.$employee->id.'/edit')}}"><span
+                                        @if($user->level_akses=='Pemilik Toko')
+                                        <span class="badge badge-primary">{{$user->level_akses}}</span>
+                                            @elseif($user->level_akses=='Karyawan')
+                                        <span class="badge badge-warning">{{$user->level_akses}}</span>
+                                            @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{url('users/'.$user->id.'/edit')}}"><span
                                                 class="btn btn-primary">Edit</span></a>
-                                        <form action="/employees/{{$employee->id}}" method="post" class="d-inline">
+                                        <form action="/users/{{$user->id}}" method="post" class="d-inline">
                                             @method('delete')
                                             @csrf
                                             <button class="btn btn-danger">Hapus</button>

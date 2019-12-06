@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class CategoriesController extends Controller
 {
@@ -14,7 +16,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        $categories = Category::all();
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -24,7 +27,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.create');
     }
 
     /**
@@ -35,7 +38,16 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['required', 'string', 'max:255'],
+        ]);
+
+        Category::create([
+            'nama_kategori' => $request['nama_kategori'],
+            'deskripsi' => $request['deskripsi'],
+        ]);
+        return redirect('/categories')->with('status', 'Data berhasil ditambah');
     }
 
     /**
@@ -57,7 +69,7 @@ class CategoriesController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -69,7 +81,16 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'nama_kategori' => ['required', 'string', 'max:255'],
+            'deskripsi' => ['required', 'string', 'max:255'],
+        ]);
+        Category::where('id', $category->id)
+        ->update([
+            'nama_kategori' => $request['nama_kategori'],
+            'deskripsi' => $request['deskripsi'],
+        ]);
+        return redirect('/categories')->with('status', 'Data berhasil diubah');
     }
 
     /**
@@ -80,6 +101,8 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category = Category::destroy($category->id);
+        return redirect('/categories')->with('status', 'Data berhasil dihapus');
+
     }
 }

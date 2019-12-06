@@ -23,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+//        $hour = new DateTime();
+        $timezone = date_default_timezone_set('Asia/Jakarta');
+        $hour = date('H');
+        return view('home', compact('hour', 'timezone'));
     }
 }

@@ -1,6 +1,6 @@
 <nav id="sidebar" class="sidebar">
     <div class="sidebar-content ">
-        <a class="sidebar-brand" href="index.html">
+        <a class="sidebar-brand" href="{{url('/')}}">
             <img src="{{asset('/appstack/img/brands/logo.png')}}" class="rounded-circle" alt="Logo"  width="30" height="30">
             <span class="align-middle">Sistem Toko Material</span>
         </a>
@@ -12,12 +12,12 @@
             <li class="sidebar-item {{ Request::is('/')  ? 'active' : '' }}">
                 <a href="{{url('/')}}"  class="sidebar-link" >
                     <i class="align-middle" data-feather="home"></i>
-                    <span class="align-middle">Dashboard</span>
+                    <span class="align-middle">Beranda</span>
                 </a>
 
             </li>
-            <li class="sidebar-item {{ Request::is('employees')  ? 'active' : '' }}">
-                <a href="{{url('/employees')}}"  class="sidebar-link" >
+            <li class="sidebar-item {{ Request::is('users')  ? 'active' : '' }}">
+                <a href="{{url('/users')}}"  class="sidebar-link" >
                     <i class="align-middle" data-feather="users"></i>
                     <span class="align-middle">Pengguna</span>
                 </a>

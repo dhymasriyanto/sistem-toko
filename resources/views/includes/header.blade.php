@@ -44,13 +44,15 @@
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
                     {{--                    <img src="" class="avatar img-fluid rounded-circle mr-1" alt="Chris Wood"> --}}
-                    <span class="text-dark">Chris Wood</span>
+                    <span class="text-dark">
+                        {{Auth::user()->name}} ({{Auth::user()->level_akses}})
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle mr-1" data-feather="user"></i> Profile</a>
+                    <a class="dropdown-item" href="/profiles"><i class="align-middle mr-1" data-feather="user"></i> Profil</a>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Sign out</a>
+                    <a class="dropdown-item" href="/logout">Keluar</a>
                 </div>
             </li>
         </ul>

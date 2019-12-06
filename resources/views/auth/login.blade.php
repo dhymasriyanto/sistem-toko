@@ -2,11 +2,12 @@
 
 {{--@section('content')--}}
 
-    <!doctype html>
+
+@section('title', 'Login')
+<!doctype html>
 <html lang="en">
 <head>
     @include('includes.head')
-
 </head>
 <body>
 <main class="main d-flex w-100">
@@ -26,21 +27,22 @@
                         <div class="card-body">
                             <div class="m-sm-4">
                                 <div class="text-center">
-                                    <img src="{{url('/appstack/img/brands/logo.png')}}" alt="Chris Wood" class="img-fluid rounded-circle"
+                                    <img src="{{url('/appstack/img/brands/logo.png')}}" alt="Chris Wood"
+                                         class="img-fluid rounded-circle"
                                          width="132" height="132"/>
                                 </div>
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
 
                                     <div class="form-group">
-                                        <label>Email</label>
+                                        <label>Username</label>
 
-                                        <input placeholder="Enter your email" id="email" type="email"
-                                               class="form-control form-control-lg @error('email') is-invalid @enderror"
-                                               name="email" value="{{ old('email') }}" required autocomplete="email"
+                                        <input placeholder="Enter your username" id="username" type="text"
+                                               class="form-control form-control-lg @error('username') is-invalid @enderror"
+                                               name="username" value="{{ old('username') }}" required autocomplete="username"
                                                autofocus>
 
-                                        @error('email')
+                                        @error('username')
                                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -66,13 +68,13 @@
                                             {{ __('Login') }}
                                         </button>
 
-{{--                                        @if (Route::has('password.request'))--}}
-{{--                                            <a class="btn btn-link" href="{{ route('password.request') }}">--}}
-{{--                                                {{ __('Forgot Your Password?') }}--}}
-{{--                                            </a>--}}
-{{--                                        @endif--}}
-{{--                                        <a href="dashboard-default.html" class="btn btn-lg btn-primary">Sign in</a>--}}
-                                        <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
+                                    {{--                                        @if (Route::has('password.request'))--}}
+                                    {{--                                            <a class="btn btn-link" href="{{ route('password.request') }}">--}}
+                                    {{--                                                {{ __('Forgot Your Password?') }}--}}
+                                    {{--                                            </a>--}}
+                                    {{--                                        @endif--}}
+                                    {{--                                        <a href="dashboard-default.html" class="btn btn-lg btn-primary">Sign in</a>--}}
+                                    <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
                                     </div>
                                 </form>
                             </div>

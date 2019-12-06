@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title' , 'Tambah Data Karyawan')
+@section('title' , 'Tambah Data Pengguna')
 
 @section('content')
 
@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-5">
                 <h1 class="h3 mb-3">
-                    Tambah Data Karyawan
+                    Tambah Data Pengguna
                 </h1>
                 <div class="card">
                     <div class="card-body">
@@ -18,7 +18,7 @@
                             <div class="form-group">
                                 <label for="name">Nama</label>
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                       name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                       name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Masukkan nama pengguna">
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -30,7 +30,7 @@
                                 <label for="username">Username</label>
                                 <input id="username" type="text"
                                        class="form-control @error('username') is-invalid @enderror" name="username"
-                                       value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                       value="{{ old('username') }}" required autocomplete="username" autofocus placeholder="Masukkan username pengguna">
 
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">
@@ -45,8 +45,8 @@
                                     <?php
                                     $levelAkses = array("Pemilik Toko", "Karyawan");
                                     ?>
-                                    @foreach($levelAkses as $level)
-                                        <option value="{{$level}}">{{$level}}</option>
+                                        @foreach($levelAkses as $level)
+                                    <option value="{{$level}}">{{$level}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -54,7 +54,7 @@
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input id="password" type="password"
-                                       class="form-control @error('password') is-invalid @enderror" name="password"
+                                       class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Masukkan password pengguna"
                                        required autocomplete="new-password">
 
                                 @error('password')
@@ -66,7 +66,7 @@
                             <div class="form-group">
                                 <label for="password-confirm">Konfirmasi Password</label>
                                 <input id="password-confirm" type="password" class="form-control"
-                                       name="password_confirmation" required autocomplete="new-password">
+                                       name="password_confirmation" required autocomplete="new-password" placeholder="Konfirmasi password pengguna">
                             </div>
 
                             <button type="submit" class="btn btn-primary">Simpan</button>

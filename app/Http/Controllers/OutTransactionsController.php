@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Stuff;
 use App\OutTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OutTransactionsController extends Controller
 {
@@ -14,7 +16,18 @@ class OutTransactionsController extends Controller
      */
     public function index()
     {
-        return view('out-transactions.index');
+        $stuffs = DB::table('stuffs')
+            ->join('categories', 'stuffs.id_kategori', '=', 'categories.id')
+            ->join('units', 'stuffs.id_satuan', '=', 'units.id')
+            ->get(array(
+                'stuffs.id',
+                'nama_barang',
+                'nama_kategori',
+                'nama_satuan',
+                'harga',
+                'jumlah_stok'
+            ));
+        return view('out-transactions.index', compact('stuffs'));
     }
 
     /**

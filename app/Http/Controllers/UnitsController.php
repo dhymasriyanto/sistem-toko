@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Unit;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class UnitsController extends Controller
      */
     public function index()
     {
-        return view('units.index');
+        $units = Unit::all();
+        return view('units.index', compact('units'));
     }
 
     /**
@@ -24,7 +26,7 @@ class UnitsController extends Controller
      */
     public function create()
     {
-        //
+        return view('units.create');
     }
 
     /**
@@ -35,7 +37,15 @@ class UnitsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_satuan'=>['required', 'string', 'max:255']
+        ]);
+        Unit::create(
+            [
+                'nama_satuan'=>$request['nama_satuan']
+            ]
+        );
+        return redirect('/units')->with('status', 'Data berhasil ditambah');
     }
 
     /**
@@ -57,7 +67,7 @@ class UnitsController extends Controller
      */
     public function edit(Unit $unit)
     {
-        //
+        return view('units.edit',compact('unit'));
     }
 
     /**
@@ -69,7 +79,19 @@ class UnitsController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        //
+        $request->validate([
+            'nama_satuan'=>['required','string', 'max:255']
+        ]);
+
+        Unit::where('id', $unit->id)
+            ->update([
+                'nama_satuan' => $request['nama_satuan'],
+
+            ]);
+
+        return redirect('/units')->with('status', 'Data berhasil diubah');
+
+
     }
 
     /**
@@ -80,6 +102,7 @@ class UnitsController extends Controller
      */
     public function destroy(Unit $unit)
     {
-        //
+        $unit = Unit::destroy($unit->id);
+        return redirect('/units')->with('status', 'Data berhasil dihapus');
     }
 }

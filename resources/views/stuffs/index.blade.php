@@ -23,8 +23,8 @@
                 </h1>
                 <div class="card">
                     <div class="card-body">
-                        <a href="/employees/create" class="btn btn-primary my-3">Tambah</a>
-                        <table class="table table-responsive">
+                        <a href="/stuffs/create" class="btn btn-primary my-3">Tambah</a>
+                        <table class="table table-responsiven table_id display">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -37,15 +37,15 @@
                             </tr>
                             </thead>
                             <tbody>
-{{--@dd($stuffs)--}}
+                            {{--@dd($stuffs)--}}
                             @foreach($stuffs as $stuff)
                                 <tr>
-                                    <th scope="row">{{$loop->iteration}}</th>
+                                    <td scope="row">{{$loop->iteration}}</td>
                                     <td>{{$stuff->nama_barang}}</td>
                                     <td>{{$stuff->nama_kategori}}</td>
                                     <td>{{$stuff->jumlah_stok}}</td>
                                     <td>{{$stuff->nama_satuan}}</td>
-                                    <td>Rp {{$stuff->harga}}</td>
+                                    <td>@money($stuff->harga)</td>
                                     <td>
                                         <a href="{{url('stuffs/'.$stuff->id.'/edit')}}"><span
                                                 class="btn btn-primary">Edit</span></a>
