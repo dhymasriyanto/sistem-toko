@@ -41,8 +41,12 @@ Route::resource('stuffs', 'StuffsController');
 Route::resource('categories', 'CategoriesController');
 Route::resource('debt-histories', 'DebtHistoriesController');
 Route::resource('histories', 'HistoriesController');
-Route::resource('profiles', 'ProfilesController');
+//Route::resource('profiles', 'ProfilesController');
 //Route::resource('in-transactions', 'InTransactionsController');
+Route::get('/profiles', 'ProfilesController@index');
+Route::get('/profiles/{profile}', 'ProfilesController@show');
+Route::get('/profiles/{profile}/edit', 'ProfilesController@edit');
+Route::put('/profiles/{profile}', 'ProfilesController@update');
 
 Route::get('/in-transactions', 'InTransactionsController@index');
 Route::put('/in-transactions', 'InTransactionsController@update');
@@ -88,7 +92,10 @@ Route::get('/units', [
     'middleware' => 'auth',
     'uses' => 'UnitsController@index'
 ]);
-
+Route::get('/profiles', [
+    'middleware' => 'auth',
+    'uses' => 'ProfilesController@index'
+]);
 //Route::get('/register', [
 //    'middleware' => 'auth',
 //    'uses' => 'HomeController@index'

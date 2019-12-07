@@ -5,18 +5,7 @@
 @section('content')
     <div class="container-fluid p-0">
 
-        @if (session('status'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
 
-                <div class="alert-message">
-                    {{ session('status') }}
-
-                </div>
-            </div>
-        @endif
         <h1 class="h3 mb-3">
             Transaksi Keluar
         </h1>
@@ -33,7 +22,7 @@
                                         gudang.</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-responsive display table_id">
+                                    <table class="table table-responsive display table_id" id="example">
                                         <thead>
                                         <tr>
                                             <th style="width:40%;">Nama Barang</th>

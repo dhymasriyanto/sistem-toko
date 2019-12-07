@@ -49,12 +49,33 @@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="/profiles"><i class="align-middle mr-1" data-feather="user"></i> Profil</a>
+                    <a class="dropdown-item" href="/profiles/{{Auth::user()->id}}"><i class="align-middle mr-1" data-feather="user"></i>Profil</a>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/logout">Keluar</a>
+{{--                    <a class="dropdown-item" href="/logout">Keluar</a>--}}
+                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">Logout</a>
+
                 </div>
             </li>
         </ul>
     </div>
 </nav>
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Warning!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body m-3">
+                <p class="mb-0">Yakin untuk keluar?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <a type="button" href="/logout" class="btn btn-danger">Yakin</a>
+            </div>
+        </div>
+    </div>
+</div>

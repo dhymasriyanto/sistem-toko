@@ -6,18 +6,7 @@
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-12 col-lg-12">
-                @if (session('status'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
 
-                        <div class="alert-message">
-                            {{ session('status') }}
-
-                        </div>
-                    </div>
-                @endif
                 <h1 class="h3 mb-3">
                     Daftar Barang
                 </h1>
@@ -49,11 +38,35 @@
                                     <td>
                                         <a href="{{url('stuffs/'.$stuff->id.'/edit')}}"><span
                                                 class="btn btn-primary">Edit</span></a>
-                                        <form action="/stuffs/{{$stuff->id}}" method="post" class="d-inline">
-                                            @method('delete')
-                                            @csrf
-                                            <button class="btn btn-danger">Hapus</button>
-                                        </form>
+
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sizedModalSm{{$stuff->id}}">
+                                            Hapus
+                                        </button>
+                                        {{--                                            <button type="button" class="btn btn-danger">Hapus</button>--}}
+                                        <div class="modal fade" id="sizedModalSm{{$stuff->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Warning!</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body m-3">
+                                                        <p class="mb-0">Yakin untuk menghapus {{$stuff->nama_barang}}?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                        <form action="/stuffs/{{$stuff->id}}" method="post" class="d-inline">
+                                                            @method('delete')
+                                                            @csrf
+                                                            <button class="btn btn-danger">Yakin</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </td>
                                 </tr>
                             @endforeach

@@ -6,18 +6,7 @@
     <div class="container-fluid p-0">
         <div class="row">
             <div class="col-12 col-lg-12">
-                @if (session('status'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
 
-                        <div class="alert-message">
-                            {{ session('status') }}
-
-                        </div>
-                    </div>
-                @endif
                 <h1 class="h3 mb-3">
                     Daftar Kategori
                 </h1>
@@ -43,11 +32,34 @@
                                     <td>
                                         <a href="{{url('categories/'.$category->id.'/edit')}}"><span
                                                 class="btn btn-primary">Edit</span></a>
-                                        <form action="/categories/{{$category->id}}" method="post" class="d-inline">
-                                            @method('delete')
-                                            @csrf
-                                            <button class="btn btn-danger">Hapus</button>
-                                        </form>
+
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sizedModalSm{{$category->id}}">
+                                            Hapus
+                                        </button>
+{{--                                            <button type="button" class="btn btn-danger">Hapus</button>--}}
+                                        <div class="modal fade" id="sizedModalSm{{$category->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-sm" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Warning!</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body m-3">
+                                                        <p class="mb-0">Yakin untuk menghapus {{$category->nama_kategori}}?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                                                        <form action="/categories/{{$category->id}}" method="post" class="d-inline">
+                                                            @method('delete')
+                                                            @csrf
+                                                        <button class="btn btn-danger">Yakin</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -59,3 +71,9 @@
         </div>
     </div>
 @endsection
+
+{{--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sizedModalSm">--}}
+{{--    Small--}}
+{{--</button>--}}
+
+

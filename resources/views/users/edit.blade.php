@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-5">
                 <h1 class="h3 mb-3">
-                    Ubah Data Karyawan
+                    Ubah Data Pengguna
                 </h1>
                 <div class="card">
                     <div class="card-body">

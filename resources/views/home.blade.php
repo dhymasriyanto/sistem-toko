@@ -15,7 +15,7 @@
                 @elseif($hour > 14 && $hour < 18)
                     {{"Sore"}}
                 @elseif($hour >= 18 && $hour < 24)
-                    {{"Malam"}};
+                    {{"Malam"}}
                 @else
                     {{"Begadang"}}
                 @endif, {{Auth::user()->name}}!

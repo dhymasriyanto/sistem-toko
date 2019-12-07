@@ -68,6 +68,7 @@
         $('.select2').select2();
     });
 </script>
+
 <script !src="">
     $(document).ready(function () {
         $('.table_id').DataTable({
@@ -85,4 +86,10 @@
             }
         });
     });
+</script>
+
+<script>
+    @if (session('status'))
+    toastr.success("{{session('status')}}")
+    @endif
 </script>
