@@ -16,6 +16,12 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $users = User::all();
@@ -37,7 +43,7 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -57,21 +63,32 @@ class UsersController extends Controller
 //            'jabatan'=>$request->jabatan
 //        ]);
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255', 'unique:users'],
+//        $old = $request->old_password;
+//        $oldest = Auth::user()->password;
+//        $check = Hash::check($old, $oldest);
+        $new = $request->password;
+        $conf = $request->password_confirmation;
+        $truth = $new == $conf;
+        if ($truth) {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'username' => ['required', 'string', 'max:255', 'unique:users'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'level_akses' => 'required',
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+                'level_akses' => 'required',
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+            ]);
 
-        User::create([
-            'name' => $request['name'],
+            User::create([
+                'name' => $request['name'],
 //            'email' => $data['email'],
-            'username' => $request['username'],
-            'level_akses' => $request['level_akses'],
-            'password' => Hash::make($request['password']),
-        ]);
+                'username' => $request['username'],
+                'level_akses' => $request['level_akses'],
+                'password' => Hash::make($request['password']),
+            ]);
+
+        }else{
+            return redirect('/users/')->with('gagal', 'Data gagal ditambah, konfirmasi password tidak sama');
+        }
 
         return redirect('/users')->with('status', 'Data berhasil ditambah');
     }
@@ -79,7 +96,7 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show(User $user)
@@ -90,7 +107,7 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
@@ -101,8 +118,8 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
@@ -110,7 +127,7 @@ class UsersController extends Controller
         $old = $request->old_password;
         $new = $request->password;
         $conf = $request->password_confirmation;
-        $oldest = Auth::user()->password;
+        $oldest = $user->password;
         $check = Hash::check($old, $oldest);
         $truth = $new == $conf;
 //        dd($truth, $check, $oldest, $old, $new, $conf);
@@ -141,29 +158,52 @@ class UsersController extends Controller
                             'password' => Hash::make($request['password']),
                         ]);
                 } else {
-                    return redirect('/users/' . Auth::user()->id.'/edit')->with('gagal', 'Data gagal diubah, konfirmasi password tidak sama');
-
+                    return redirect('/users/' . $user->id . '/edit')->with('gagal', 'Data gagal diubah, konfirmasi password tidak sama');
                 }
-            }else{
-                return redirect('/users/' . Auth::user()->id.'/edit')->with('gagal', 'Data gagal diubah, pastikan anda ingat password lama anda');
+            } else {
+                return redirect('/users/' . $user->id . '/edit')->with('gagal', 'Data gagal diubah, pastikan anda ingat password lama anda');
             }
         } else {
-            $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'username' => ['required', 'string', 'max:255','unique:users'],
-//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'level_akses' => 'required',
-//                'password' => ['required', 'string', 'min:8', 'confirmed'],
-            ]);
 
-            User::where('id', $user->id)
-                ->update([
-                    'name' => $request['name'],
-//            'email' => $data['email'],
-                    'username' => $request['username'],
-                    'level_akses' => $request['level_akses'],
-//                    'password' => Hash::make($request['password']),
+            $uname = $request->username;
+            $udata = $user->username;
+            $checkuname = $uname == $udata;
+            if ($checkuname) {
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'username' => ['required', 'string', 'max:255'],
+//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'level_akses' => 'required',
+//                'password' => ['required', 'string', 'min:8', 'confirmed'],
                 ]);
+
+                User::where('id', $user->id)
+                    ->update([
+                        'name' => $request['name'],
+//            'email' => $data['email'],
+                        'username' => $request['username'],
+                        'level_akses' => $request['level_akses'],
+//                    'password' => Hash::make($request['password']),
+                    ]);
+            } else {
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'username' => ['required', 'string', 'max:255', 'unique:users'],
+//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'level_akses' => 'required',
+//                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                ]);
+
+                User::where('id', $user->id)
+                    ->update([
+                        'name' => $request['name'],
+//            'email' => $data['email'],
+                        'username' => $request['username'],
+                        'level_akses' => $request['level_akses'],
+//                    'password' => Hash::make($request['password']),
+                    ]);
+            }
+
         }
         return redirect('/users')->with('status', 'Data berhasil diubah');
     }
@@ -171,7 +211,7 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(User $user)

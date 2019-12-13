@@ -57,16 +57,16 @@
                                 <input id="harga" type="text"
                                        class="form-control @error('harga') is-invalid @enderror" name="harga" placeholder="Masukkan harga per satuan"
                                        required autocomplete="harga"  value="{{$stuff->harga }}">
-                                </div>
                                 @error('harga')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="jumlah_stok">Jumlah Stok</label>
-                                <input id="jumlah_stok" type="text" class="form-control" placeholder="Masukkan jumlah stok"
+                                <input id="jumlah_stok" type="text" class="form-control  @error('jumlah_stok') is-invalid @enderror" placeholder="Masukkan jumlah stok"
                                        name="jumlah_stok" required autocomplete="jumlah_stok"  value="{{ $stuff->jumlah_stok }}">
                                 @error('jumlah_stok')
                                 <span class="invalid-feedback" role="alert">

@@ -57,8 +57,6 @@ class OutTransactionsController extends Controller
             'jumlah' => $jumlah
         );
         dd($transaksi);
-
-
     }
 
     /**

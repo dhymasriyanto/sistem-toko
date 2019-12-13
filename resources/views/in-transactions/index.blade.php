@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         <form method="post" action="/in-transactions">
-                            @method('put')
+{{--                            @method('put')--}}
                             @csrf
                             <div class="form-group">
                                 <label for="id_barang">Nama Barang</label>

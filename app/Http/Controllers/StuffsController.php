@@ -17,6 +17,10 @@ class StuffsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $stuffs = DB::table('stuffs')
@@ -57,8 +61,8 @@ class StuffsController extends Controller
     {
         $request->validate([
             'nama_barang' => ['required', 'string', 'max:255', 'unique:stuffs'],
-            'jumlah_stok' => ['required'],
-            'harga' => ['required'],
+            'jumlah_stok' => ['required', 'numeric'],
+            'harga' => ['required', 'numeric'],
             'id_kategori' => ['required'],
             'id_satuan' => 'required',
         ]);
@@ -113,8 +117,8 @@ class StuffsController extends Controller
         if ($checkstuff){
             $request->validate([
                 'nama_barang' => ['required', 'string', 'max:255'],
-                'jumlah_stok' => ['required'],
-                'harga' => ['required'],
+                'jumlah_stok' => ['required', 'numeric'],
+                'harga' => ['required', 'numeric'],
                 'id_kategori' => ['required'],
                 'id_satuan' => 'required',
             ]);
@@ -130,8 +134,8 @@ class StuffsController extends Controller
         }else{
             $request->validate([
                 'nama_barang' => ['required', 'string', 'max:255', 'unique:stuffs'],
-                'jumlah_stok' => ['required'],
-                'harga' => ['required'],
+                'jumlah_stok' => ['required', 'numeric'],
+                'harga' => ['required', 'numeric'],
                 'id_kategori' => ['required'],
                 'id_satuan' => 'required',
             ]);

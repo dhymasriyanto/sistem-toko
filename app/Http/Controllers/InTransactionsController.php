@@ -13,6 +13,11 @@ class InTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $stuffs = Stuff::all();
@@ -37,7 +42,20 @@ class InTransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_barang' => 'required',
+            'jumlah_barang' => ['required','numeric']
+        ]);
+        $value = $request['jumlah_barang'];
+        $id = $request['id_barang'];
+//        dd($value, $id);
+
+        Stuff::where('id', $id)
+            ->increment(
+                'jumlah_stok', $value
+            );
+
+        return redirect('/in-transactions')->with('status', 'Transaksi berhasil');
     }
 
     /**
@@ -70,20 +88,20 @@ class InTransactionsController extends Controller
      */
     public function update(Request $request, Stuff $stuff)
     {
-        $request->validate([
-            'id_barang' => 'required',
-            'jumlah_barang' => 'required'
-        ]);
-        $value = $request['jumlah_barang'];
-        $id = $request['id_barang'];
-//        dd($value, $id);
-
-        Stuff::where('id', $id)
-            ->increment(
-                'jumlah_stok', $value
-            );
-
-        return redirect('/in-transactions')->with('status', 'Transaksi berhasil');
+//        $request->validate([
+//            'id_barang' => 'required',
+//            'jumlah_barang' => 'required'
+//        ]);
+//        $value = $request['jumlah_barang'];
+//        $id = $request['id_barang'];
+////        dd($value, $id);
+//
+//        Stuff::where('id', $id)
+//            ->increment(
+//                'jumlah_stok', $value
+//            );
+//
+//        return redirect('/in-transactions')->with('status', 'Transaksi berhasil');
     }
 
     /**

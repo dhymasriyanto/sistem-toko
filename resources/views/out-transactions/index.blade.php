@@ -55,9 +55,9 @@
                             </div>
                         </div>
                         <div class="col-12 col-xl-6">
-                            <form method="post" action="/out-transactions">
+{{--                            <form method="post" action="/out-transactions">--}}
 {{--                                @method('put')--}}
-                                @csrf
+{{--                                @csrf--}}
                                 <div class="card">
                                     <div class="card-header">
                                         <h5 class="card-title">Keranjang Belanja</h5>
@@ -68,9 +68,11 @@
                                         <table class="table table-responsive display " id="example2">
                                             <thead>
                                             <tr>
-                                                <th hidden style="width:40%;">ID</th>
+                                                <th style="width:40%;">ID</th>
                                                 <th style="width:40%;">Nama Barang</th>
                                                 <th style="width:25%">Kategori</th>
+                                                <th hidden style="width:25%">Jumlah Stok</th>
+
                                                 <th class="d-none d-md-table-cell" style="width:25%">Satuan</th>
                                                 <th style="width:25%">Harga</th>
                                                 <th style="width:25%">Jumlah</th>
@@ -85,8 +87,10 @@
                                     </div>
 
                                 </div>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </form>
+{{--                                <button type="submit" class="btn btn-primary">Simpan</button>--}}
+                                <a class="btn btn-primary" data-toggle="modal" data-target="#belanja" href="">Belanja</a>
+
+{{--                            </form>--}}
                         </div>
 
 
@@ -97,4 +101,33 @@
 
     </div>
 
+
+    <div class="modal fade" id="belanja" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ganti password</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/out-transactions">
+{{--                    @method('put')--}}
+                    @csrf
+                    <div class="modal-body m-3">
+                        {{--                                                isi--}}
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit"  class="btn btn-danger">Bayar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
