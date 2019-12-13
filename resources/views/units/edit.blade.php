@@ -17,20 +17,18 @@
                             @method('put')
                             @csrf
                             <div class="form-group">
-                                <label for=" nama_satuan">Nama Kategori</label>
-                                <input id=" nama_satuan" type="text"
-                                       class="form-control @error(' nama_satuan') is-invalid @enderror"
-                                       name=" nama_satuan" value="{{ $unit-> nama_satuan  }}" required
-                                       autocomplete=" nama_satuan" autofocus placeholder="Masukkan nama satuan">
+                                <label for="nama_satuan">Nama Kategori</label>
+                                <input id="nama_satuan" type="text"
+                                       class="form-control @error('nama_satuan') is-invalid @enderror"
+                                       name="nama_satuan" value="{{ $unit->nama_satuan  }}" required
+                                       autocomplete="nama_satuan" autofocus placeholder="Masukkan nama satuan">
 
-                                @error(' nama_satuan')
+                                @error('nama_satuan')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
-
-
 
 
                             <button type="submit" class="btn btn-primary">Simpan</button>

@@ -41,8 +41,9 @@
 
                             <div class="form-group">
                                 <label for="level_akses">Level Akses</label>
-                                <select class="form-control" id="level_akses" name="level_akses">
-                                    <?php
+                                <select class="form-control" id="level_akses" name="level_akses" required>
+                                    <option value="{{null}}" >Pilih level akses pengguna</option>
+                                <?php
                                     $levelAkses = array("Pemilik Toko", "Karyawan");
                                     ?>
                                         @foreach($levelAkses as $level)

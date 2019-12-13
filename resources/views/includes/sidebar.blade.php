@@ -7,7 +7,7 @@
 
         <ul class="sidebar-nav">
             <li class="sidebar-header">
-                Main
+                Menu
             </li>
             <li class="sidebar-item {{ Request::is('/')  ? 'active' : '' }}">
                 <a href="{{url('/')}}"  class="sidebar-link" >

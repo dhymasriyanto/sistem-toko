@@ -49,11 +49,12 @@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="/profiles/{{Auth::user()->id}}"><i class="align-middle mr-1" data-feather="user"></i>Profil</a>
-
+                    <a style="color: deepskyblue" class="dropdown-item" href="/profiles/{{Auth::user()->id}}"><i
+                            class="align-middle mr-1" data-feather="user"></i>Profil</a>
                     <div class="dropdown-divider"></div>
-{{--                    <a class="dropdown-item" href="/logout">Keluar</a>--}}
-                    <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">Logout</a>
+                    {{--                    <a class="dropdown-item" href="/logout">Keluar</a>--}}
+                    <a style="color: red" class="dropdown-item" data-toggle="modal" data-target="#logoutModal"><i
+                            class="align-middle mr-1" data-feather="log-out"></i>Logout</a>
 
                 </div>
             </li>

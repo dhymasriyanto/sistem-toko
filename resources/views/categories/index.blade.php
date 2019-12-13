@@ -30,12 +30,12 @@
                                     <td>{{$category->nama_kategori}}</td>
                                     <td>{{$category->deskripsi}}</td>
                                     <td>
-                                        <a href="{{url('categories/'.$category->id.'/edit')}}"><span
-                                                class="btn btn-primary">Edit</span></a>
+                                        <a  title="Edit data" href="{{url('categories/'.$category->id.'/edit')}}"><span
+                                               ><i data-feather="edit"></i></span></a>
 
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sizedModalSm{{$category->id}}">
-                                            Hapus
-                                        </button>
+                                        <a  title="Hapus data" style="color: red" data-toggle="modal" data-target="#sizedModalSm{{$category->id}}">
+                                            <span><i data-feather="trash"></i></span>
+                                        </a>
 {{--                                            <button type="button" class="btn btn-danger">Hapus</button>--}}
                                         <div class="modal fade" id="sizedModalSm{{$category->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-sm" role="document">

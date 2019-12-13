@@ -35,7 +35,7 @@
                                 <input id="deskripsi" type="text"
                                        class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi"
                                        placeholder="Masukkan deskripsi"
-                                       required autocomplete="deskripsi" maxlength="22" value="{{ old('deskripsi') }}">
+                                        autocomplete="deskripsi" value="{{ old('deskripsi') }}">
 
                                 @error('deskripsi')
                                 <span class="invalid-feedback" role="alert">

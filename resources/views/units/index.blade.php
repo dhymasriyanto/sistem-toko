@@ -12,7 +12,7 @@
                 </h1>
                 <div class="card">
                     <div class="card-body">
-                        <a href="/units/create" class="btn btn-primary my-3">Tambah</a>
+                        <a href="/units/create" class="btn btn-primary my-3"  >Tambah</a>
                         <table class="table table-responsive table_id display">
                             <thead>
                             <tr>
@@ -28,12 +28,12 @@
                                     <td scope="row">{{$loop->iteration}}</td>
                                     <td>{{$unit->nama_satuan}}</td>
                                     <td>
-                                        <a href="{{url('units/'.$unit->id.'/edit')}}"><span
-                                                class="btn btn-primary">Edit</span></a>
+                                        <a  title="Edit data" href="{{url('units/'.$unit->id.'/edit')}}"><span
+                                               ><i data-feather="edit"></i></span></a>
 
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sizedModalSm{{$unit->id}}">
-                                            Hapus
-                                        </button>
+                                        <a style="color: red"  title="Hapus data" data-toggle="modal" data-target="#sizedModalSm{{$unit->id}}">
+                                            <i data-feather="trash"></i>
+                                        </a>
                                         {{--                                            <button type="button" class="btn btn-danger">Hapus</button>--}}
                                         <div class="modal fade" id="sizedModalSm{{$unit->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-sm" role="document">

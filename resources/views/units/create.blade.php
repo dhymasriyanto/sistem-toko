@@ -16,13 +16,13 @@
                         <form method="post" action="/units">
                             @csrf
                             <div class="form-group">
-                                <label for=" nama_satuan">Nama Satuan</label>
-                                <input id=" nama_satuan" type="text"
-                                       class="form-control @error(' nama_satuan') is-invalid @enderror"
-                                       name=" nama_satuan" value="{{ old(' nama_satuan') }}" required
-                                       autocomplete=" nama_satuan" autofocus placeholder="Masukkan nama satuan">
+                                <label for="nama_satuan">Nama Satuan</label>
+                                <input id="nama_satuan" type="text"
+                                       class="form-control @error('nama_satuan') is-invalid @enderror"
+                                       name="nama_satuan" value="{{ old('nama_satuan') }}" required
+                                       autocomplete="nama_satuan" autofocus placeholder="Masukkan nama satuan">
 
-                                @error(' nama_satuan')
+                                @error('nama_satuan')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

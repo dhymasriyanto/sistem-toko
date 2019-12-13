@@ -23,7 +23,7 @@
                                     <img src="{{asset('/appstack/img/avatars/user.svg')}}" width="100" alt="">
 
                                 </div>
-                                    <a href="/profiles/{{$profile->id}}/edit" class="btn btn-primary m-4">Ubah Profil</a>
+                                    <a href="/profiles/{{$profile->id}}/edit" class="btn btn-primary m-4">Ubah profil</a>
                             </div>
                         </div>
                         <div class="col-md-8">

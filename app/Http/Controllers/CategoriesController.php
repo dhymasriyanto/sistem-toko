@@ -81,15 +81,32 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $request->validate([
-            'nama_kategori' => ['required', 'string', 'max:255'],
-            'deskripsi' => ['required', 'string', 'max:255'],
-        ]);
-        Category::where('id', $category->id)
-        ->update([
-            'nama_kategori' => $request['nama_kategori'],
-            'deskripsi' => $request['deskripsi'],
-        ]);
+        $ctname= $request->nama_kategori;
+        $ctdata = $category->nama_kategori;
+        $checkct = $ctname == $ctdata;
+
+        if ($checkct){
+            $request->validate([
+                'nama_kategori' => ['required', 'string', 'max:255'],
+                'deskripsi' => ['required', 'string', 'max:255'],
+            ]);
+            Category::where('id', $category->id)
+                ->update([
+                    'nama_kategori' => $request['nama_kategori'],
+                    'deskripsi' => $request['deskripsi'],
+                ]);
+        }else{
+            $request->validate([
+                'nama_kategori' => ['required', 'string', 'max:255', 'unique:categories'],
+                'deskripsi' => ['required', 'string', 'max:255'],
+            ]);
+            Category::where('id', $category->id)
+                ->update([
+                    'nama_kategori' => $request['nama_kategori'],
+                    'deskripsi' => $request['deskripsi'],
+                ]);
+        }
+
         return redirect('/categories')->with('status', 'Data berhasil diubah');
     }
 

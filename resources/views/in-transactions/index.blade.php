@@ -18,8 +18,9 @@
                             @csrf
                             <div class="form-group">
                                 <label for="id_barang">Nama Barang</label>
-                                <select class="form-control select2" id="id_barang" name="id_barang">
-                                    @foreach($stuffs as $stuff)
+                                <select class="form-control select2" id="id_barang" name="id_barang" required>
+                                    <option value="{{null}}" >Pilih barang</option>
+                                @foreach($stuffs as $stuff)
                                         <option value="{{$stuff->id}}">{{$stuff->nama_barang}}</option>
                                     @endforeach
                                 </select>

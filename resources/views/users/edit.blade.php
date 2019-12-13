@@ -18,7 +18,8 @@
                             <div class="form-group">
                                 <label for="name">Nama</label>
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                       name="name" value="{{ $user->name }}" required autocomplete="name" autofocus placeholder="Masukkan nama pengguna">
+                                       name="name" value="{{ $user->name }}" required autocomplete="name" autofocus
+                                       placeholder="Masukkan nama pengguna">
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -29,7 +30,8 @@
                             <div class="form-group">
                                 <label for="username">Username</label>
                                 <input id="username" type="text"
-                                       class="form-control @error('username') is-invalid @enderror" name="username" placeholder="Masukkan username pengguna"
+                                       class="form-control @error('username') is-invalid @enderror" name="username"
+                                       placeholder="Masukkan username pengguna"
                                        value="{{ $user->username }}" required autocomplete="username" autofocus>
 
                                 @error('username')
@@ -41,19 +43,22 @@
 
                             <div class="form-group">
                                 <label for="level_akses">Level Akses</label>
-                                <select class="form-control" id="level_akses" name="level_akses">
-                                    <option value="" ></option>
+                                <select class="form-control" id="level_akses" name="level_akses" required>
+                                    <option value="{{null}}">Pilih level akses pengguna</option>
+
                                     <?php
                                     $levelAkses = array("Pemilik Toko", "Karyawan");
                                     ?>
                                     @foreach($levelAkses as $v)
-                                        <option value="{{$v}}" {{$v ==$user->level_akses  ? 'selected' : ''}} >{{$v}}</option>
+                                        <option
+                                            value="{{$v}}" {{$v ==$user->level_akses  ? 'selected' : ''}} >{{$v}}</option>
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <a href="">Ganti password?</a>
+                                <a href="" data-toggle="modal" data-target="#changePass">Ganti password?</a>
+
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                             <a href="/users" class="btn btn-danger">Batal</a>
@@ -64,4 +69,66 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="changePass" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ganti password</h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/users/{{$user->id}}">
+                    @method('put')
+                    @csrf
+                    <div class="modal-body m-3">
+                        {{--                                                isi--}}
+                        <div class="form-group">
+                            <label for="old-password">Password Lama</label>
+                            <input id="old-password" type="password"
+                                   class="form-control @error('old-password') is-invalid @enderror"
+                                   name="old_password" placeholder="Masukkan password lama"
+                                   required autocomplete="old-password">
+
+                            @error('old-password')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">Password Baru</label>
+                            <input id="new-password" type="password"
+                                   class="form-control @error('new-password') is-invalid @enderror"
+                                   name="password" placeholder="Masukkan password baru"
+                                   required autocomplete="new-password">
+
+                            @error('new-password')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="password-confirm">Konfirmasi Password Baru</label>
+                            <input id="password-confirm" type="password" class="form-control"
+                                   name="password_confirmation" required
+                                   autocomplete="new-password"
+                                   placeholder="Konfirmasi password baru">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit"  class="btn btn-danger">Simpan</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection

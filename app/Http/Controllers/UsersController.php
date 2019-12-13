@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 //use App\Employee;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -58,7 +59,7 @@ class UsersController extends Controller
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'level_akses' => 'required',
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -71,6 +72,7 @@ class UsersController extends Controller
             'level_akses' => $request['level_akses'],
             'password' => Hash::make($request['password']),
         ]);
+
         return redirect('/users')->with('status', 'Data berhasil ditambah');
     }
 
@@ -105,23 +107,64 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
+        $old = $request->old_password;
+        $new = $request->password;
+        $conf = $request->password_confirmation;
+        $oldest = Auth::user()->password;
+        $check = Hash::check($old, $oldest);
+        $truth = $new == $conf;
+//        dd($truth, $check, $oldest, $old, $new, $conf);
+        if (isset($new)) {
+//            dd($new);
+
+            if ($check) {
+//                dd($check);
+                if ($truth) {
+//                    dd($truth, $check, $oldest, $old, $new, $conf);
+//                    dd($truth);
+                    $request->validate([
+//                'name' => ['required', 'string', 'max:255'],
+//                'username' => ['required', 'string', 'max:255'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'level_akses' => 'required',
-//            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+//                'level_akses' => 'required',
+                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+//                        'old_password' => ['required', 'string', 'min:8', 'confirmed'],
+//                        'password_confirmation' => ['required', 'string', 'min:8', 'confirmed'],
+                    ]);
 
-
-        User::where('id', $user->id)
-            ->update([
-                'name' => $request['name'],
+                    User::where('id', $user->id)
+                        ->update([
+//                    'name' => $request['name'],
 //            'email' => $data['email'],
-                'username' => $request['username'],
-                'level_akses' => $request['level_akses'],
-//                'password' => Hash::make($request['password']),
+//                    'username' => $request['username'],
+//                    'level_akses' => $request['level_akses'],
+                            'password' => Hash::make($request['password']),
+                        ]);
+                } else {
+                    return redirect('/users/' . Auth::user()->id.'/edit')->with('gagal', 'Data gagal diubah, konfirmasi password tidak sama');
+
+                }
+            }else{
+                return redirect('/users/' . Auth::user()->id.'/edit')->with('gagal', 'Data gagal diubah, pastikan anda ingat password lama anda');
+            }
+        } else {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'username' => ['required', 'string', 'max:255','unique:users'],
+//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'level_akses' => 'required',
+//                'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
+
+            User::where('id', $user->id)
+                ->update([
+                    'name' => $request['name'],
+//            'email' => $data['email'],
+                    'username' => $request['username'],
+                    'level_akses' => $request['level_akses'],
+//                    'password' => Hash::make($request['password']),
+                ]);
+        }
         return redirect('/users')->with('status', 'Data berhasil diubah');
     }
 

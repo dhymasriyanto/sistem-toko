@@ -36,7 +36,7 @@
                                 <input id="deskripsi" type="text"
                                        class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi"
                                        placeholder="Masukkan deskripsi"
-                                       required autocomplete="deskripsi" maxlength="22" value="{{ $category->deskripsi}}">
+                                        autocomplete="deskripsi" value="{{ $category->deskripsi}}">
 
                                 @error('deskripsi')
                                 <span class="invalid-feedback" role="alert">

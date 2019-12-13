@@ -29,8 +29,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="id_kategori">Kategori</label>
-                                <select class="form-control select2" id="id_kategori" name="id_kategori">
-
+                                <select class="form-control select2" id="id_kategori" name="id_kategori" required>
+                                    <option value="{{null}}" >Pilih kategori barang</option>
                                     @foreach($categories as $category)
                                         <option value="{{$category->id}}" {{$stuff->id_kategori == $category->id ? 'selected' : ''}}>{{$category->nama_kategori}}</option>
                                     @endforeach
@@ -39,9 +39,9 @@
 
                             <div class="form-group">
                                 <label for="id_satuan">Satuan</label>
-                                <select class="form-control select2" id="id_satuan" name="id_satuan">
-
-                                    @foreach($units as $unit)
+                                <select class="form-control select2" id="id_satuan" name="id_satuan" required>
+                                    <option value="{{null}}" >Pilih satuan barang</option>
+                                @foreach($units as $unit)
                                         <option value="{{$unit->id}}" {{$stuff->id_satuan == $unit->id ? 'selected' : ''}}>{{$unit->nama_satuan}}</option>
                                     @endforeach
                                 </select>

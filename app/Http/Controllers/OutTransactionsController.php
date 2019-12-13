@@ -14,8 +14,9 @@ class OutTransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(OutTransaction $outTransaction)
     {
+
         $stuffs = DB::table('stuffs')
             ->join('categories', 'stuffs.id_kategori', '=', 'categories.id')
             ->join('units', 'stuffs.id_satuan', '=', 'units.id')
@@ -27,7 +28,7 @@ class OutTransactionsController extends Controller
                 'harga',
                 'jumlah_stok'
             ));
-        return view('out-transactions.index', compact('stuffs'));
+        return view('out-transactions.index', compact('stuffs', 'outTransaction'));
     }
 
     /**
@@ -48,7 +49,16 @@ class OutTransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = $request['id'];
+        $jumlah = $request['jumlah'];
+
+        $transaksi [] = array(
+            'id'=>$id,
+            'jumlah' => $jumlah
+        );
+        dd($transaksi);
+
+
     }
 
     /**
@@ -82,7 +92,6 @@ class OutTransactionsController extends Controller
      */
     public function update(Request $request, OutTransaction $outTransaction)
     {
-        //
     }
 
     /**

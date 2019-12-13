@@ -79,15 +79,31 @@ class UnitsController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
-        $request->validate([
-            'nama_satuan'=>['required','string', 'max:255']
-        ]);
-
-        Unit::where('id', $unit->id)
-            ->update([
-                'nama_satuan' => $request['nama_satuan'],
-
+        $unitname = $request->nama_satuan;
+        $unitdata = $unit->nama_satuan;
+        $checkunit = $unitname == $unitdata;
+        if ($checkunit){
+            $request->validate([
+                'nama_satuan'=>['required','string', 'max:255']
             ]);
+
+            Unit::where('id', $unit->id)
+                ->update([
+                    'nama_satuan' => $request['nama_satuan'],
+
+                ]);
+        }else{
+            $request->validate([
+                'nama_satuan'=>['required','string', 'max:255','unique:units']
+            ]);
+
+            Unit::where('id', $unit->id)
+                ->update([
+                    'nama_satuan' => $request['nama_satuan'],
+
+                ]);
+        }
+
 
         return redirect('/units')->with('status', 'Data berhasil diubah');
 

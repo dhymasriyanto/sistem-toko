@@ -56,7 +56,7 @@ class StuffsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_barang' => ['required', 'string', 'max:255'],
+            'nama_barang' => ['required', 'string', 'max:255', 'unique:stuffs'],
             'jumlah_stok' => ['required'],
             'harga' => ['required'],
             'id_kategori' => ['required'],
@@ -106,22 +106,46 @@ class StuffsController extends Controller
      */
     public function update(Request $request, Stuff $stuff)
     {
-        $request->validate([
-            'nama_barang' => ['required', 'string', 'max:255'],
-            'jumlah_stok' => ['required'],
-            'harga' => ['required'],
-            'id_kategori' => ['required'],
-            'id_satuan' => 'required',
-        ]);
+        $stuffname= $request->nama_barang;
+        $stuffdata = $stuff->nama_barang;
+        $checkstuff = $stuffname == $stuffdata;
+//        dd($stuffname, $stuffdata);
+        if ($checkstuff){
+            $request->validate([
+                'nama_barang' => ['required', 'string', 'max:255'],
+                'jumlah_stok' => ['required'],
+                'harga' => ['required'],
+                'id_kategori' => ['required'],
+                'id_satuan' => 'required',
+            ]);
 
-        Stuff::where('id', $stuff->id)
-        ->update([
-            'nama_barang' => $request['nama_barang'],
-            'jumlah_stok' => $request['jumlah_stok'],
-            'harga' => $request['harga'],
-            'id_kategori' => $request['id_kategori'],
-            'id_satuan' => $request['id_satuan'],
-        ]);
+            Stuff::where('id', $stuff->id)
+                ->update([
+                    'nama_barang' => $request['nama_barang'],
+                    'jumlah_stok' => $request['jumlah_stok'],
+                    'harga' => $request['harga'],
+                    'id_kategori' => $request['id_kategori'],
+                    'id_satuan' => $request['id_satuan'],
+                ]);
+        }else{
+            $request->validate([
+                'nama_barang' => ['required', 'string', 'max:255', 'unique:stuffs'],
+                'jumlah_stok' => ['required'],
+                'harga' => ['required'],
+                'id_kategori' => ['required'],
+                'id_satuan' => 'required',
+            ]);
+
+            Stuff::where('id', $stuff->id)
+                ->update([
+                    'nama_barang' => $request['nama_barang'],
+                    'jumlah_stok' => $request['jumlah_stok'],
+                    'harga' => $request['harga'],
+                    'id_kategori' => $request['id_kategori'],
+                    'id_satuan' => $request['id_satuan'],
+                ]);
+        }
+
         return redirect('/stuffs')->with('status', 'Data berhasil diubah');
     }
 

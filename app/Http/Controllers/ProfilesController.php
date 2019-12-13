@@ -6,6 +6,7 @@ use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ProfilesController extends Controller
 {
@@ -66,7 +67,7 @@ class ProfilesController extends Controller
         if (Auth::user()->id == $profile->id) {
             return view('profiles.edit', compact('profile'));
         } else {
-            return redirect('/profiles/'.Auth::user()->id.'/edit');
+            return redirect('/profiles/' . Auth::user()->id . '/edit');
         }
     }
 
@@ -79,23 +80,99 @@ class ProfilesController extends Controller
      */
     public function update(Request $request, User $profile)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255'],
+//        dd($profile->id);
+        $old = $request->old_password;
+        $new = $request->password;
+        $conf = $request->password_confirmation;
+        $oldest = Auth::user()->password;
+        $check = Hash::check($old, $oldest);
+        $truth = $new == $conf;
+        $uname= $request->username;
+        $user=Auth::user()->username;
+        $ucheck = $uname == $user;
+//        dd($truth, $check, $oldest, $old, $new, $conf);
+        if (isset($new)) {
+//            dd($new);
+
+            if ($check) {
+//                dd($check);
+                if ($truth) {
+//                    dd($truth, $check, $oldest, $old, $new, $conf);
+//                    dd($truth);
+                    $request->validate([
+//                'name' => ['required', 'string', 'max:255'],
+//                'username' => ['required', 'string', 'max:255'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'level_akses' => 'required',
-//            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+//                'level_akses' => 'required',
+                        'password' => ['required', 'string', 'min:8', 'confirmed'],
+//                        'old_password' => ['required', 'string', 'min:8', 'confirmed'],
+//                        'password_confirmation' => ['required', 'string', 'min:8', 'confirmed'],
+                    ]);
 
-
-        User::where('id', $profile->id)
-            ->update([
-                'name' => $request['name'],
+                    User::where('id', $profile->id)
+                        ->update([
+//                    'name' => $request['name'],
 //            'email' => $data['email'],
-                'username' => $request['username'],
-                'level_akses' => $request['level_akses'],
+//                    'username' => $request['username'],
+//                    'level_akses' => $request['level_akses'],
+                            'password' => Hash::make($request['password']),
+                        ]);
+                } else {
+                    return redirect('/profiles/' . Auth::user()->id.'/edit')->with('gagal', 'Data gagal diubah, konfirmasi password tidak sama');
+
+                }
+            }else{
+                return redirect('/profiles/' . Auth::user()->id.'/edit')->with('gagal', 'Data gagal diubah, pastikan anda ingat password lama anda');
+            }
+
+        } else {
+            if ($ucheck){
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'username' => ['required', 'string', 'max:255'],
+//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'level_akses' => 'required',
+//                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                ]);
+
+                User::where('id', $profile->id)
+                    ->update([
+                        'name' => $request['name'],
+//            'email' => $data['email'],
+                        'username' => $request['username'],
+                        'level_akses' => $request['level_akses'],
+//                    'password' => Hash::make($request['password']),
+                    ]);
+            }else{
+                $request->validate([
+                    'name' => ['required', 'string', 'max:255'],
+                    'username' => ['required', 'string', 'max:255', 'unique:users'],
+//            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'level_akses' => 'required',
+//                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                ]);
+
+                User::where('id', $profile->id)
+                    ->update([
+                        'name' => $request['name'],
+//            'email' => $data['email'],
+                        'username' => $request['username'],
+                        'level_akses' => $request['level_akses'],
+//                    'password' => Hash::make($request['password']),
+                    ]);
+            }
+
+        }
+
+
+//        User::where('id', $profile->id)
+//            ->update([
+//                'name' => $request['name'],
+////            'email' => $data['email'],
+//                'username' => $request['username'],
+//                'level_akses' => $request['level_akses'],
 //                'password' => Hash::make($request['password']),
-            ]);
+//            ]);
         return redirect('/profiles/' . Auth::user()->id)->with('status', 'Data berhasil diubah');
     }
 

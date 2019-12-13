@@ -28,8 +28,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="id_kategori">Kategori</label>
-                                <select class="form-control select2" id="id_kategori" name="id_kategori">
-                                    @foreach($categories as $category)
+                                <select class="form-control select2" id="id_kategori" name="id_kategori" required>
+                                    <option value="{{null}}" >Pilih kategori barang</option>
+
+                                @foreach($categories as $category)
                                         <option value="{{$category->id}}">{{$category->nama_kategori}}</option>
                                     @endforeach
                                 </select>
@@ -37,8 +39,8 @@
 
                             <div class="form-group">
                                 <label for="id_satuan">Satuan</label>
-                                <select class="form-control select2" id="id_satuan" name="id_satuan">
-
+                                <select class="form-control select2" id="id_satuan" name="id_satuan" required>
+                                    <option value="{{null}}" >Pilih satuan barang</option>
                                     @foreach($units as $unit)
                                         <option value="{{$unit->id}}">{{$unit->nama_satuan}}</option>
                                     @endforeach
@@ -53,7 +55,7 @@
                                     </div>
                                     <input id="harga" type="text"
                                            class="form-control @error('harga') is-invalid @enderror" name="harga" placeholder="Masukkan harga per satuan"
-                                           required autocomplete="harga" maxlength="22"  value="{{ old('harga') }}" >
+                                           required autocomplete="harga"  value="{{ old('harga') }}" >
 
                                 </div>
                                 @error('harga')

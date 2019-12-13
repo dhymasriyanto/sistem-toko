@@ -85,6 +85,47 @@
                 "search": "Cari"
             }
         });
+
+        var table = $('#example').DataTable();
+        // var table2 = $('#example2').DataTable({
+            // "oLanguage": {"sZeroRecords": "", "sEmptyTable": ""}
+        // });
+        $('#example tbody').on('click', 'a', function () {
+            var data = table.row($(this).parents('tr')).data();
+            // table2.row.add(data).draw();
+            // $('table#example2 tbody').append('');
+            $('table#example2 tbody ').append(
+                '<tr> ' +
+                '<td hidden>' +
+                '<input hidden size="4" name ="id[]" id="id' + data[0] + '" type="text" value="'+data[0]+'"  />' +
+                '</td>' +
+                '<td>' + data[1] + '</td>' +
+                '<td>' + data[2] + '</td>' +
+                '<td>' +
+                '<input size="4" name ="jumlah[]" id="jumlah' + data[0] + '" type="text" value="1"  />' +
+                '</td>' +
+                '<td>' + data[4] + '</td>' +
+                '<td>' + data[5] + '</td>' +
+                '<td>' + data[6] + '</td>' +
+                // '<td><a href="#"><i class="align-middle" data-feather="times"></i></a></td>' +
+                '</tr>'
+            );
+            // table.row.remove();
+            table
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+
+            // table2.row().remove().draw( false );
+
+
+            // $('table#example2 tbody ').append('<td>' + data[1]+ '</td>');
+            // $('table#example2 tbody ').append('<td>' + data[3]+ '</td>');
+            // $('table#example2 tbody ').append('<td>' + data[4]+ '</td></tr>');
+            // $('table#example2 tbody').append('');
+
+        });
+
     });
 </script>
 
@@ -92,4 +133,10 @@
     @if (session('status'))
     toastr.success("{{session('status')}}")
     @endif
+    @if (session('gagal'))
+    toastr.error("{{session('gagal')}}")
+    @endif
+
+
 </script>
+

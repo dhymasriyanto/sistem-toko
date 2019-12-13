@@ -36,12 +36,12 @@
                                     <td>{{$stuff->nama_satuan}}</td>
                                     <td>@money($stuff->harga)</td>
                                     <td>
-                                        <a href="{{url('stuffs/'.$stuff->id.'/edit')}}"><span
-                                                class="btn btn-primary">Edit</span></a>
+                                        <a  title="Edit data" href="{{url('stuffs/'.$stuff->id.'/edit')}}"><span
+                                              ><i data-feather="edit"></i></span></a>
 
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sizedModalSm{{$stuff->id}}">
-                                            Hapus
-                                        </button>
+                                        <a  title="Hapus data" style="color: red" data-toggle="modal" data-target="#sizedModalSm{{$stuff->id}}">
+                                            <i data-feather="trash"></i>
+                                        </a>
                                         {{--                                            <button type="button" class="btn btn-danger">Hapus</button>--}}
                                         <div class="modal fade" id="sizedModalSm{{$stuff->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-sm" role="document">
