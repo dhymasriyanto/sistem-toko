@@ -98,11 +98,11 @@
                 <h5 class="card-title">Laporan Terkini</h5>
                 <h6 class="card-subtitle text-muted">Berikut laporan terkini bulan kemarin.</h6>
             </div>
-            <div class="card-body">
-                <div class="chart">
-                    <canvas id="chartjs-line"></canvas>
-                </div>
-            </div>
+{{--            <div class="card-body">--}}
+{{--                <div class="chart">--}}
+{{--                    <canvas id="chartjs-line"></canvas>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
     </div>
 

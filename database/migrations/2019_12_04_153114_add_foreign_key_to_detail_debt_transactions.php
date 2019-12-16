@@ -14,9 +14,9 @@ class AddForeignKeyToDetailDebtTransactions extends Migration
     public function up()
     {
         Schema::table('detail_debt_transactions', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_transaksi');
+            $table->unsignedBigInteger('id_transaksi_hutang');
             $table->unsignedBigInteger('id_barang');
-            $table->foreign('id_transaksi')->references('id')->on('transactions')->onDelete('cascade');
+            $table->foreign('id_transaksi_hutang')->references('id')->on('debt-transactions')->onDelete('cascade');
             $table->foreign('id_barang')->references('id')->on('stuffs')->onDelete('cascade');
 
         });

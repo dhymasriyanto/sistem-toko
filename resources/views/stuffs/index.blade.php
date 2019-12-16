@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
                         <a href="/stuffs/create" class="btn btn-primary my-3">Tambah</a>
-                        <table class="table table-responsiven table_id display">
+                        <table class="table table-responsive table_id display">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>

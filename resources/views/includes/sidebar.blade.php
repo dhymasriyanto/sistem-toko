@@ -55,7 +55,7 @@
 
                 </ul>
             </li>
-            <li class="sidebar-item {{ Request::is('/reports')  ? 'active' : '' }}">
+            <li class="sidebar-item {{ Request::is('reports')  ? 'active' : '' }}">
                 <a href="{{url('/reports')}}"  class="sidebar-link" >
                     <i class="align-middle" data-feather="trending-up"></i>
                     <span class="align-middle">Laporan</span>

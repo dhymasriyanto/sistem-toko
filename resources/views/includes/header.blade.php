@@ -49,7 +49,7 @@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a style="color: deepskyblue" class="dropdown-item" href="/profiles/{{Auth::user()->id}}"><i
+                    <a style="color: deepskyblue" class="dropdown-item" href="{{url('/profiles/'.Auth::user()->id)}}"><i
                             class="align-middle mr-1" data-feather="user"></i>Profil</a>
                     <div class="dropdown-divider"></div>
                     {{--                    <a class="dropdown-item" href="/logout">Keluar</a>--}}
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                <a type="button" href="/logout" class="btn btn-danger">Yakin</a>
+                <a type="button" href="{{url('/logout')}}" class="btn btn-danger">Yakin</a>
             </div>
         </div>
     </div>

@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Profil')
+@section('title', 'Ubah Profil')
 
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-5">
-                <h1 class="mt-3">
-                    Profil Anda
+                <h1 class="h3 mb-3">
+                    Ubah Profil
                 </h1>
 
             </div>

@@ -16,11 +16,17 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::resource('/', 'HomeController')->only([
     'index'
 ]);
-Route::resource('users', 'UsersController');
+Route::resource('users', 'UsersController')->except([
+    'show'
+]);
 Route::resource('stuffs', 'StuffsController');
 Route::resource('categories', 'CategoriesController');
-Route::resource('debt-histories', 'DebtHistoriesController');
-Route::resource('histories', 'HistoriesController');
+Route::resource('debt-histories', 'DebtHistoriesController')->except([
+    'create'
+]);
+Route::resource('histories', 'HistoriesController')->except([
+    'create'
+]);
 Route::resource('profiles', 'ProfilesController')->except([
     'create', 'store', 'destroy'
 ]);
