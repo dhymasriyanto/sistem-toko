@@ -70,7 +70,137 @@
         $('.select2').select2();
     });
 </script>
+{{--@if(isset($histories) || isset($debtHistories))--}}
+{{--    <script !src="">--}}
+{{--        $(document).ready(function () {--}}
+{{--            $('.example').DataTable({--}}
+{{--                dom: 'Bfrtip',--}}
+{{--                buttons: [--}}
+{{--                    {--}}
+{{--                        extend: 'print',--}}
+{{--                        text: '<i class="fa fa-print"></i> Cetak struk',--}}
 
+{{--                        @if(isset($histories))--}}
+{{--                            @foreach($histories as $history)--}}
+
+{{--                        messageTop: '<table >\n' +--}}
+{{--                            '                        @foreach($histories as $history)\n' +--}}
+{{--                            '                            <thead>\n' +--}}
+{{--                            '                            <tr>\n' +--}}
+{{--                            '                                <td width="50%">No. faktur</td>\n' +--}}
+{{--                            '                                <td width="5%">:</td>\n' +--}}
+{{--                            '                                <td>\n' +--}}
+{{--                            '                                    {{$history->no_faktur}}\n' +--}}
+{{--                            '                                </td>\n' +--}}
+{{--                            '                            </tr>\n' +--}}
+{{--                            '                            <tr>\n' +--}}
+{{--                            '                                <td width="50%">Kasir</td>\n' +--}}
+{{--                            '                                <td width="5%">:</td>\n' +--}}
+{{--                            '                                <td>\n' +--}}
+{{--                            '                                    {{$history->name}}\n' +--}}
+{{--                            '                                </td>\n' +--}}
+{{--                            '                            </tr>\n' +--}}
+{{--                            '                            <tr>\n' +--}}
+{{--                            '                                <td width="50%">Tanggal</td>\n' +--}}
+{{--                            '                                <td width="5%">:</td>\n' +--}}
+{{--                            '                                <td>\n' +--}}
+{{--                            '                                    {{$history->tanggal_transaksi}}\n' +--}}
+{{--                            '                                </td>\n' +--}}
+{{--                            '                            </tr>\n' +--}}
+{{--                            '                            </thead>\n' +--}}
+{{--                            '\n' +--}}
+{{--                            '                        @endforeach\n' +--}}
+{{--                            '                    </table>',--}}
+{{--                        @endforeach--}}
+{{--                        @elseif(isset($debtHistories))--}}
+{{--                        @foreach($debtHistories as $debtHistori)--}}
+{{--                            messageTop: '<table class="col-md-4">\n' +--}}
+{{--                            '                            @foreach($debtHistories as $debtHistory)\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">No. faktur</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->no_faktur}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Kasir</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->name}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Tanggal</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->tanggal_transaksi}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                            @endforeach\n' +--}}
+{{--                            '                        </table>\n' +--}}
+{{--                            '                        <table class="col-md-4">\n' +--}}
+{{--                            '                            @foreach($debtHistories as $debtHistory)\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Nama Penghutang</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->nama_penghutang}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Tenggat Hutang</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->tenggat_hutang}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Alamat</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->alamat}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                            @endforeach\n' +--}}
+{{--                            '                        </table>\n' +--}}
+{{--                            '                        <table  class="col-md-4">\n' +--}}
+{{--                            '                            @foreach($debtHistories as $debtHistory)\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Nomer KTP</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->nomer_ktp}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '                                <tr>\n' +--}}
+{{--                            '                                    <td width="50%">Nomer HP</td>\n' +--}}
+{{--                            '                                    <td width="5%">:</td>\n' +--}}
+{{--                            '                                    <td>\n' +--}}
+{{--                            '                                        {{$debtHistory->nomer_hp}}\n' +--}}
+{{--                            '                                    </td>\n' +--}}
+{{--                            '                                </tr>\n' +--}}
+{{--                            '\n' +--}}
+{{--                            '                            @endforeach\n' +--}}
+{{--                            '                        </table>'--}}
+{{--                        @endforeach--}}
+{{--                        @endif--}}
+{{--                    }--}}
+{{--                ],--}}
+{{--                "bInfo": false--}}
+{{--                , "bLengthChange": false--}}
+{{--                , "bFilter": false--}}
+{{--                , "bPaginate": false--}}
+{{--                , "bSort": false--}}
+{{--                , "oLanguage": {--}}
+{{--                    "sZeroRecords": false--}}
+{{--                    , "sEmptyTable": false--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+
+{{--    </script>--}}
+{{--@endif--}}
 <script !src="">
     $(document).ready(function () {
         $('.table_id').DataTable({
@@ -87,6 +217,29 @@
                 "search": "Cari"
             }
         });
+
+
+        // var datatablesButtons = $('#tabel_riwayat').DataTable({
+        // responsive: true,
+        // lengthChange: !1,
+        // buttons: ["copy", "print"]
+        // });
+        // datatablesButtons.buttons().container().appendTo("#datatable_wrapper .col-md-6:eq(0)");
+
+        //     // Datatables basic
+        //     $("#datatables-basic").DataTable({
+        //         responsive: true
+        //     });
+        // Datatables with Buttons
+
+
+        //     // Datatables with Multiselect
+        //     var datatablesMulti = $("#datatables-multi").DataTable({
+        //         responsive: true,
+        //         select: {
+        //             style: "multi"
+        //         }
+        //     });
 
         // var table = $('#example').DataTable();
         // var table2 = $('#example2').on("draw.dt", function () {
@@ -163,43 +316,43 @@
         //     // $('table#example2 tbody ').append('<td>' + data[4]+ '</td></tr>');
         //     // $('table#example2 tbody').append('');
 
-    //     });
-    //     $('#example2 tbody').on('click', 'a', function () {
-    //         data = table2.row($(this).parents('tr')).data();
-    //         // table.row.add([
-    //         //     data[0],
-    //         //     data[1],
-    //         //     data[2],
-    //         //     data[3],
-    //         //     data[4],
-    //         //     // document.write(data[0]),
-    //         //     // '<input size="4" name ="jumlah[]" id="jumlah' + data[0] + '" type="text" value="1"  />',
-    //         //     data[6]
-    //         // ]).draw(false);
-    //
-    //         // table
-    //         //     .row($(this).parents('tr'))
-    //         //     .data([
-    //         //         data[0],
-    //         //         data[1],
-    //         //         data[2],
-    //         //         --data[3],
-    //         //         data[4],
-    //         //         data[5],
-    //         //         data[6]
-    //         //     ])
-    //         //     .draw();
-    //
-    //         // alert(data)
-    //         // table.row.add(data).draw();
-    //         // $('table#example2 tbody').append('');
-    //
-    //         // table.row.remove();
-    //         table2
-    //             .row($(this).parents('tr'))
-    //             .remove()
-    //             .draw();
-    //     });
+        //     });
+        //     $('#example2 tbody').on('click', 'a', function () {
+        //         data = table2.row($(this).parents('tr')).data();
+        //         // table.row.add([
+        //         //     data[0],
+        //         //     data[1],
+        //         //     data[2],
+        //         //     data[3],
+        //         //     data[4],
+        //         //     // document.write(data[0]),
+        //         //     // '<input size="4" name ="jumlah[]" id="jumlah' + data[0] + '" type="text" value="1"  />',
+        //         //     data[6]
+        //         // ]).draw(false);
+        //
+        //         // table
+        //         //     .row($(this).parents('tr'))
+        //         //     .data([
+        //         //         data[0],
+        //         //         data[1],
+        //         //         data[2],
+        //         //         --data[3],
+        //         //         data[4],
+        //         //         data[5],
+        //         //         data[6]
+        //         //     ])
+        //         //     .draw();
+        //
+        //         // alert(data)
+        //         // table.row.add(data).draw();
+        //         // $('table#example2 tbody').append('');
+        //
+        //         // table.row.remove();
+        //         table2
+        //             .row($(this).parents('tr'))
+        //             .remove()
+        //             .draw();
+        //     });
     });
 </script>
 

@@ -12,7 +12,7 @@
                 </h1>
                 <div class="card">
                     <div class="card-body">
-                        <a href="/stuffs/create" class="btn btn-primary my-3">Tambah</a>
+                        <a href="/stuffs/create" class="btn btn-primary my-3"><span class="align-middle"><i data-feather="plus"></i></span><span class="ml-2 align-middle">Tambah</span></a>
                         <table class="table table-responsive table_id display">
                             <thead>
                             <tr>

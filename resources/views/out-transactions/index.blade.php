@@ -17,9 +17,12 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title">Daftar Barang</h5>
-                                    <h6 class="card-subtitle text-muted">Berikut daftar barang yang tersedia di
-                                        gudang.</h6>
+                                    <div class="row">
+                                        <span class="mr-4 ml-2"><i class="feather-lg text-danger" data-feather="folder"></i></span>
+                                        <span><h5 class="card-title">Daftar Barang</h5>
+                                        <h6 class="card-subtitle text-muted">Daftar barang pada gudang</h6>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="card-body">
                                     {{--                                    <table class="table table-responsive display table_id" id="example">--}}
@@ -59,7 +62,7 @@
                                                     required>
                                                 <option value="{{null}}">Pilih barang</option>
                                                 @foreach($stuffs as $stuff)
-                                                    <option value="{{$stuff->id}}">{{$stuff->nama_barang}} - Rp.
+                                                    <option value="{{$stuff->id}}">{{$stuff->nama_barang}}
                                                         @money($stuff->harga)/{{$stuff->nama_satuan}}
                                                     </option>
                                                 @endforeach
@@ -96,21 +99,35 @@
                             {{--                                @csrf--}}
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="card-title">Keranjang Belanja</h5>
-                                    <h6 class="card-subtitle text-muted">Berikut daftar barang pada keranjang
-                                        belanja.</h6>
+                                    <div class="row">
+                                        <span class="mr-4 ml-2"><i class="feather-lg text-danger" data-feather="shopping-cart"></i></span>
+                                        <span><h5 class="card-title">Keranjang Belanja</h5>
+                                        <h6 class="card-subtitle text-muted">Berikut daftar barang pada keranjang
+                                            belanja.</h6></span>
+                                    </div>
+
                                 </div>
                                 <div class="card-body">
+                                    <form action="/out-transactions" method="post" class="d-inline">
+                                        @method('delete')
+                                        @csrf
+                                    <?php if (isset($_COOKIE["shopping_cart"])){
+?>
+                                        <button class=" my-3 fa-pull-right btn btn-danger"><i class="align-middle"
+                                                                                              data-feather="trash"></i><span
+                                                class="align-middle ml-2">Hapus semua</span></button>
+                                        <?php } ?>
+                                    </form>
                                     <table class="table table-responsive">
                                         <thead>
                                         <tr>
-                                            <th >Nama Barang</th>
-                                            <th >Kategori</th>
-                                            <th >Sisa Stok</th>
-                                            <th >Jumlah</th>
-                                            <th >Satuan</th>
-                                            <th >Harga</th>
-                                            <th >Total</th>
+                                            <th>Nama Barang</th>
+                                            <th>Kategori</th>
+                                            <th>Sisa Stok</th>
+                                            <th>Jumlah</th>
+                                            <th>Satuan</th>
+                                            <th>Harga</th>
+                                            <th>Total</th>
                                             <th>Aksi</th>
                                         </tr>
                                         </thead>
@@ -119,7 +136,12 @@
 
                                         <?php
                                         use Illuminate\Support\Facades\Crypt;
-                                        if(isset($_COOKIE["shopping_cart"]))
+                                        //                                        dd($_COOKIE['shopping_cart']!="");
+                                        if (isset($_COOKIE["shopping_cart"])) {
+                                            $test = Crypt::decryptString(stripslashes($_COOKIE['shopping_cart']));
+                                        }
+                                        //                                        dd($test);
+                                        if(isset($_COOKIE["shopping_cart"]) && $test != "[]")
                                         {
                                         $total = 0;
                                         $cookie_data = stripslashes($_COOKIE['shopping_cart']);
@@ -131,12 +153,21 @@
                                         <tr>
                                             <td>{{$keys->item_name}}</td>
                                             <td>{{$keys->item_category}}</td>
-                                            <td>{{$keys->item_stock - $keys->item_quantity}}</td>
+                                            <td>{{$keys->item_stock}}</td>
                                             <td>{{$keys->item_quantity}}</td>
                                             <td>{{$keys->item_unit}}</td>
                                             <td>@money($keys->item_price)</td>
                                             <td>@money($keys->item_quantity * $keys->item_price)</td>
-                                            <td><a href=""><span class="text-danger"><i data-feather="x"></i></span></a></td>
+                                            <td>
+                                                <form action="/out-transactions/{{$keys->item_id}}" method="post"
+                                                      class="d-inline">
+                                                    @method('delete')
+                                                    @csrf
+                                                    <button class=" btn btn-link"><i style="color: red"
+                                                                                     class="align-middle"
+                                                                                     data-feather="delete"></i></button>
+                                                </form>
+                                            {{--                                                <a href=""><span class="text-danger"></span></a></td>--}}
                                         </tr>
                                         <?php
                                         $total = $total + ($keys->item_quantity * $keys->item_price);
@@ -151,17 +182,22 @@
                                         }
                                         else {
                                             echo '<tr>
-                                                  <td colspan="8" align="center">Kosong</td>
+                                                  <td colspan="8" align="center">Tidak ada item di keranjang</td>
                                               </tr>';
                                         }
                                         ?>
                                         </tbody>
                                     </table>
+                                   <?php if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
+?>
+                                    <a class="btn btn-primary fa-pull-right" data-toggle="modal" data-target="#belanja"
+                                       href=""><i class="align-middle" data-feather="shopping-cart"></i><span
+                                            class="align-middle ml-2">Belanja</span> </a>
+                                            <?php }?>
                                 </div>
 
                             </div>
                             {{--                                <button type="submit" class="btn btn-primary">Simpan</button>--}}
-                            <a class="btn btn-primary" data-toggle="modal" data-target="#belanja" href="">Belanja</a>
                             {{--                            </form>--}}
                         </div>
 
@@ -178,19 +214,52 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ganti password</h5>
+                    <h5 class="modal-title"><span><i class="mr-2 align-middle" data-feather="info"></i></span><span
+                            class="align-middle">Pengingat</span></h5>
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="/out-transactions">
+                <form method="post" action="/histories">
                     {{--                    @method('put')--}}
+                    <?php
+                    $nomor = rand(1000, 9999);
+                    $mytime = Carbon\Carbon::now();
+                    $tanggal = $mytime->toDateString();
+                    $waktu = date_format($mytime, 'YmdH');
+//                    dd($waktu);
+                    ?>
                     @csrf
                     <div class="modal-body m-3">
+                        <input hidden id="id_karyawan" type="text" name="id_karyawan" value="{{Auth::user()->id}}">
+                        <input hidden id="no_faktur" type="text" name="no_faktur" value="TRNS{{Auth::user()->id}}{{$waktu}}{{$nomor}}">
+                        <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
+
                         {{--                                                isi--}}
+                        <span>Pastikan anda tidak lupa menerima uang pembayaran sebelum mengkonfirmasi</span>
+                        <?php
+                        if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
 
+                        $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                        $aa = Crypt::decryptString($cookie_data);
+                        $cart_data = json_decode($aa);
 
+                        foreach($cart_data as $keys){
+                        ?>
+
+                        <input hidden id="id{{$keys->item_id}}" type="text" name="id[]" value="{{$keys->item_id}}">
+                        <input hidden id="jml{{$keys->item_id}}" type="text" name="jml[]"
+                               value="{{$keys->item_quantity}}">
+                        <input hidden id="subtotal{{$keys->item_id}}" type="text" name="subtotal[]"
+                               value="{{$keys->item_quantity*$keys->item_price}}">
+                        <input hidden id="total" type="text" name="total" value="{{$total}}">
+
+                        <?php
+                        }
+                        }
+
+                        ?>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">

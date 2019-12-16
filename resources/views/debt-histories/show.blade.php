@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Riwayat')
+@section('title', 'Detail Hutang')
 
 @section('content')
     <div class="container">
@@ -73,7 +73,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <table class="col-md-4">
+                        <table  class="col-md-4">
                             @foreach($debtHistories as $debtHistory)
                                 <tr>
                                     <td width="50%">Nomer KTP</td>
@@ -93,8 +93,8 @@
                             @endforeach
                         </table>
                     </div>
-
-                    <table class="table table-responsive mt-4">
+                    <br>
+                    <table class="example table">
                         <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -120,7 +120,12 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <th colspan="6" class="text-center">Total Bayar</th>
+                            <td class="text-center">Total Bayar</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td>
                                 @foreach($debtHistories as $debtHistory)
                                     @money($debtHistory->total)
@@ -134,3 +139,100 @@
         </div>
     </div>
 @endsection
+
+@section('js')
+    <script !src="">
+        $(document).ready(function () {
+            $('.example').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'print',
+                        text: '<i class="fa fa-print"></i> Cetak struk',
+
+
+                        messageTop: '<table class="col-md-4">\n' +
+                            '                            @foreach($debtHistories as $debtHistory)\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">No. faktur</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->no_faktur}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Kasir</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->name}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Tanggal</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->tanggal_transaksi}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                            @endforeach\n' +
+                            '                        </table>\n' +
+                            '                        <table class="col-md-4">\n' +
+                            '                            @foreach($debtHistories as $debtHistory)\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Nama Penghutang</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->nama_penghutang}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Tenggat Hutang</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->tenggat_hutang}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Alamat</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->alamat}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                            @endforeach\n' +
+                            '                        </table>\n' +
+                            '                        <table  class="col-md-4">\n' +
+                            '                            @foreach($debtHistories as $debtHistory)\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Nomer KTP</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->nomer_ktp}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '                                <tr>\n' +
+                            '                                    <td width="50%">Nomer HP</td>\n' +
+                            '                                    <td width="5%">:</td>\n' +
+                            '                                    <td>\n' +
+                            '                                        {{$debtHistory->nomer_hp}}\n' +
+                            '                                    </td>\n' +
+                            '                                </tr>\n' +
+                            '\n' +
+                            '                            @endforeach\n' +
+                            '                        </table>'
+                    }
+                ],
+                "bInfo": false
+                , "bLengthChange": false
+                , "bFilter": false
+                , "bPaginate": false
+                , "bSort": false
+                , "oLanguage": {
+                    "sZeroRecords": false
+                    , "sEmptyTable": false
+                }
+            });
+        });
+
+    </script>
+    @endsection

@@ -26,6 +26,7 @@
 </div>
 
 @include('includes.foot')
+@yield('js')
 
 </body>
 </html>

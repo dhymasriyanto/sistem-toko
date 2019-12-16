@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class OutTransaction extends Model
 {
-    //
+    protected $fillable = ['id_barang', 'jumlah'];
 }

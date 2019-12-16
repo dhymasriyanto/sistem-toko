@@ -55,7 +55,7 @@ class InTransactionsController extends Controller
                 'jumlah_stok', $value
             );
 
-        return redirect('/in-transactions')->with('status', 'Transaksi berhasil');
+        return redirect('/stuffs')->with('status', 'Transaksi berhasil');
     }
 
     /**

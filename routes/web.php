@@ -25,7 +25,7 @@ Route::resource('debt-histories', 'DebtHistoriesController')->except([
     'create'
 ]);
 Route::resource('histories', 'HistoriesController')->except([
-    'create'
+    'destroy'
 ]);
 Route::resource('profiles', 'ProfilesController')->except([
     'create', 'store', 'destroy'
@@ -33,7 +33,9 @@ Route::resource('profiles', 'ProfilesController')->except([
 Route::resource('in-transactions', 'InTransactionsController')->only([
     'index','store'
 ]);
+Route::delete('/out-transactions', 'OutTransactionsController@destroy');
 Route::resource('out-transactions', 'OutTransactionsController');
+
 Route::resource('reports', 'ReportsController');
 Route::resource('units', 'UnitsController');
 
