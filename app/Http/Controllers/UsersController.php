@@ -131,7 +131,7 @@ class UsersController extends Controller
         $check = Hash::check($old, $oldest);
         $truth = $new == $conf;
 //        dd($truth, $check, $oldest, $old, $new, $conf);
-        if (isset($new)) {
+        if (isset($new)&& isset($old) && isset($conf)) {
 //            dd($new);
 
             if ($check) {
@@ -144,9 +144,7 @@ class UsersController extends Controller
 //                'username' => ['required', 'string', 'max:255'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
 //                'level_akses' => 'required',
-                        'password' => ['required', 'string', 'min:8', 'confirmed'],
-//                        'old_password' => ['required', 'string', 'min:8', 'confirmed'],
-//                        'password_confirmation' => ['required', 'string', 'min:8', 'confirmed'],
+                        'password' => ['required', 'string', 'min:8', 'confirmed']
                     ]);
 
                     User::where('id', $user->id)
@@ -163,7 +161,8 @@ class UsersController extends Controller
             } else {
                 return redirect('/users/' . $user->id . '/edit')->with('gagal', 'Data gagal diubah, pastikan anda ingat password lama anda');
             }
-        } else {
+        }
+        else if (isset($request->username)){
 
             $uname = $request->username;
             $udata = $user->username;
@@ -204,6 +203,8 @@ class UsersController extends Controller
                     ]);
             }
 
+        }else{
+            return redirect('/users/' . $user->id . '/edit')->with('gagal', 'Data gagal diubah, password tidak boleh kosong');
         }
         return redirect('/users')->with('status', 'Data berhasil diubah');
     }

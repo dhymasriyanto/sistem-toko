@@ -13,11 +13,11 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form method="post" action="/stuffs" >
+                        <form class="validation-form" method="post" action="/stuffs" >
                             @csrf
                             <div class="form-group">
                                 <label for="nama_barang">Nama Barang</label>
-                                <input id="nama_barang" type="text" class="form-control @error('nama_barang') is-invalid @enderror"
+                                <input id="nama_barang" type="text" class="form-control @error('nama_barang') is-invalid @enderror" aria-invalid="false"
                                        name="nama_barang" value="{{ old('nama_barang') }}" required autocomplete="nama_barang" autofocus placeholder="Masukkan nama barang">
 
                                 @error('nama_barang')
@@ -53,7 +53,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Rp</span>
                                     </div>
-                                    <input id="harga" type="text"
+                                    <input id="harga" type="number"
                                            class="form-control @error('harga') is-invalid @enderror" name="harga" placeholder="Masukkan harga per satuan"
                                            required autocomplete="harga"  value="{{ old('harga') }}" >
 
@@ -67,7 +67,7 @@
 
                             <div class="form-group">
                                 <label for="jumlah_stok">Jumlah Stok</label>
-                                <input id="jumlah_stok" type="text" class="form-control  @error('jumlah_stok') is-invalid @enderror" placeholder="Masukkan jumlah stok"
+                                <input id="jumlah_stok" type="number" class="form-control  @error('jumlah_stok') is-invalid @enderror" placeholder="Masukkan jumlah stok"
                                        name="jumlah_stok" required autocomplete="jumlah_stok"  value="{{ old('jumlah_stok') }}">
                                 @error('jumlah_stok')
                                 <span class="invalid-feedback" role="alert">

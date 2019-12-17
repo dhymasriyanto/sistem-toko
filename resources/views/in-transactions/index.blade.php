@@ -13,7 +13,7 @@
                 </h1>
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" action="/in-transactions">
+                        <form class="validation-form" method="post" action="/in-transactions">
 {{--                            @method('put')--}}
                             @csrf
                             <div class="form-group">
@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <label for="jumlah_barang">Jumlah barang</label>
 
-                                <input id="jumlah_barang" type="text"
+                                <input id="jumlah_barang" type="number"
                                        class="form-control @error('jumlah_barang') is-invalid @enderror" name="jumlah_barang"
                                        placeholder="Masukkan jumlah barang masuk"
                                        required autocomplete="jumlah_barang" maxlength="22" value="{{ old('jumlah_barang') }}">

@@ -31,11 +31,10 @@
 
                             <div class="form-group">
                                 <label for="deskripsi">Deskripsi</label>
-
-                                <input id="deskripsi" type="text"
+                                <textarea id="deskripsi" type="text"
                                        class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi"
                                        placeholder="Masukkan deskripsi"
-                                        autocomplete="deskripsi" value="{{ old('deskripsi') }}">
+                                          autocomplete="deskripsi" value="{{ old('deskripsi') }}"></textarea>
 
                                 @error('deskripsi')
                                 <span class="invalid-feedback" role="alert">

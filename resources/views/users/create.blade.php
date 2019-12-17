@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form method="post" action="/users">
+                        <form class="validation-form" method="post" action="/users">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Nama</label>
@@ -56,7 +56,7 @@
                                 <label for="password">Password</label>
                                 <input id="password" type="password"
                                        class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Masukkan password pengguna"
-                                       required autocomplete="new-password">
+                                       required >
 
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -65,9 +65,14 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label for="password-confirm">Konfirmasi Password</label>
-                                <input id="password-confirm" type="password" class="form-control"
-                                       name="password_confirmation" required autocomplete="new-password" placeholder="Konfirmasi password pengguna">
+                                <label for="password_confirmation">Konfirmasi Password</label>
+                                <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror"
+                                       name="password_confirmation" required placeholder="Konfirmasi password pengguna">
+                                @error('password_confirmation')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <button type="submit" class="btn btn-primary">Simpan</button>

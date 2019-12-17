@@ -66,9 +66,17 @@
 {{--@endif--}}
 
 <script !src="">
-    $(document).ready(function () {
-        $('.select2').select2();
-    });
+    // $(document).ready(function () {
+    //     $('.select2').select2();
+    // });
+    $(".select2").each(function () {
+        $(this)
+            .wrap("<div class=\"position-relative\"></div>")
+            .select2({
+                placeholder: "Pilih",
+                dropdownParent: $(this).parent()
+            });
+    })
 </script>
 {{--@if(isset($histories) || isset($debtHistories))--}}
 {{--    <script !src="">--}}
@@ -365,3 +373,73 @@
     @endif
 </script>
 
+<script>
+    $(function() {
+        // Initialize validation
+        $(".validation-form").validate({
+            ignore: ".ignore, .select2-input",
+            focusInvalid: false,
+            rules: {
+
+                "password": {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20
+                },
+                "old_password": {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20
+                },
+                "password_confirmation": {
+                    required: true,
+                    minlength: 8,
+                    equalTo: "input[name=\"password\"]"
+                },
+                "harga": {
+                    required: true,
+                    minlength: 2,
+                    number:true
+                },
+                "jumlah_stok": {
+                    required: true,
+                    number:true
+                },
+
+                "jumlah_barang": {
+                    required: true,
+                    number:true
+                },
+                "jumlah": {
+                    required: true,
+                    number:true
+                },
+
+            },
+            // Errors
+            errorPlacement: function errorPlacement(error, element) {
+                var $parent = $(element).parents(".form-group");
+                // Do not duplicate errors
+                if ($parent.find(".jquery-validation-error").length) {
+                    return;
+                }
+                $parent.append(
+                    error.addClass("jquery-validation-error small form-text invalid-feedback")
+                );
+            },
+            highlight: function(element) {
+                var $el = $(element);
+                var $parent = $el.parents(".form-group");
+                $el.addClass("is-invalid");
+                // Select2 and Tagsinput
+                // if ($el.hasClass("select2-hidden-accessible") || $el.attr("data-role") === "tagsinput") {
+                //     $el.parent().addClass("is-invalid");
+                // }
+            },
+            unhighlight: function(element) {
+                $(element).parents(".form-group").find(".is-invalid").removeClass("is-invalid");
+            }
+        });
+    });
+
+</script>

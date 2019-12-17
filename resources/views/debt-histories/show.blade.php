@@ -120,16 +120,19 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td class="text-center">Total Bayar</td>
+                            <td class="text-center">Total Hutang</td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td>
+                                <span style="color: red">
+
                                 @foreach($debtHistories as $debtHistory)
                                     @money($debtHistory->total)
                                 @endforeach
+                                </span>
                             </td>
                         </tr>
                         </tbody>

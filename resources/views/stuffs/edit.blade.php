@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form method="post" action="/stuffs/{{$stuff->id}}">
+                        <form class="validation-form" method="post" action="/stuffs/{{$stuff->id}}">
                             @method('put')
                             @csrf
                             <div class="form-group">
@@ -54,7 +54,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">Rp</span>
                                     </div>
-                                <input id="harga" type="text"
+                                <input id="harga" type="number"
                                        class="form-control @error('harga') is-invalid @enderror" name="harga" placeholder="Masukkan harga per satuan"
                                        required autocomplete="harga"  value="{{$stuff->harga }}">
                                 @error('harga')
@@ -66,7 +66,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="jumlah_stok">Jumlah Stok</label>
-                                <input id="jumlah_stok" type="text" class="form-control  @error('jumlah_stok') is-invalid @enderror" placeholder="Masukkan jumlah stok"
+                                <input id="jumlah_stok" type="number" class="form-control  @error('jumlah_stok') is-invalid @enderror" placeholder="Masukkan jumlah stok"
                                        name="jumlah_stok" required autocomplete="jumlah_stok"  value="{{ $stuff->jumlah_stok }}">
                                 @error('jumlah_stok')
                                 <span class="invalid-feedback" role="alert">

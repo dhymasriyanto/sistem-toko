@@ -55,7 +55,72 @@ class DebtHistoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $date = date("Y-m-d", strtotime($request->tenggat));
+
+        $request->validate([
+            'id_karyawan' => ['required'],
+            'id.*' => ['required'],
+            'tanggal' => ['required'],
+            'no_faktur' => ['required','unique:debt_transactions'],
+            'jml.*' => ['required', 'numeric'],
+            'subtotal.*' => ['required', 'numeric'],
+            'total' => ['required', 'numeric'],
+            'nama_penghutang' => ['required'],
+            'nomer_ktp'=>['required','numeric','unique:debtors'],
+            'nomer_hp'=>['required','numeric','unique:debtors'],
+            'alamat'=>['required'],
+            'tenggat'=>['required']
+        ]);
+
+        DB::table('debtors')->insert([
+            'nama_penghutang'=>$request->nama_penghutang,
+            'nomer_ktp'=>$request->nomer_ktp,
+            'nomer_hp'=>$request->nomer_hp,
+            'alamat'=>$request->alamat,
+        ]);
+
+        $penghutangs =DB::table('debtors')->where('nomer_ktp', $request->nomer_ktp)->get();
+
+        foreach ($penghutangs as $penghutang){
+            if ($request->nomer_ktp == $penghutang->nomer_ktp){
+                $id_penghutang= $penghutang->id;
+            }
+        }
+        $hutang=DebtHistory::create([
+            'no_faktur' => $request->no_faktur,
+            'tanggal_transaksi' => $request['tanggal'],
+            'tenggat_hutang'=>$date,
+            'total' => $request['total'],
+            'id_karyawan' => $request['id_karyawan'],
+            'id_penghutang'=>$id_penghutang
+        ]);
+        $no_fak = $request->no_faktur;
+        $transaksi = DB::table('debt_transactions')
+            ->where('no_faktur', $no_fak)->get();
+        foreach ($transaksi as $trans) {
+            if ($trans->no_faktur == $no_fak) {
+                $id_transaksi = $trans->id;
+            }
+        }
+        $ids=$request->id;
+        $subtotals=$request->subtotal;
+        $jmls = $request->jml;
+
+        for ($i = 0; $i< count($ids);$i++) {
+            $id = $ids[$i];
+            $subtotal = $subtotals[$i];
+            $jml = $jmls[$i];
+
+            DB::table('detail_debt_transactions')->insert([
+                'jumlah_barang' => $jml,
+                'harga' => $subtotal,
+                'id_barang' => $id,
+                'id_transaksi_hutang' => $id_transaksi
+            ]);
+            DB::table('stuffs')->where('id', $id)->decrement('jumlah_stok', $jml);
+        }
+        return redirect('/debt-histories/'.$id_transaksi)->withCookie('shopping_cart',"[]",time()-360,'/out-transactions')->with('status', 'Transaksi berhasil');
+
     }
 
     /**

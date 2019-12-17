@@ -21,12 +21,11 @@ Route::resource('users', 'UsersController')->except([
 ]);
 Route::resource('stuffs', 'StuffsController');
 Route::resource('categories', 'CategoriesController');
-Route::resource('debt-histories', 'DebtHistoriesController')->except([
-    'create'
-]);
-Route::resource('histories', 'HistoriesController')->except([
-    'destroy'
-]);
+Route::resource('debt-histories', 'DebtHistoriesController');
+Route::delete('/histories/create/{history}', 'HistoriesController@destroy');
+Route::delete('/histories/create/', 'HistoriesController@destroy');
+Route::post('/histories/create', 'HistoriesController@keranjang');
+Route::resource('histories', 'HistoriesController');
 Route::resource('profiles', 'ProfilesController')->except([
     'create', 'store', 'destroy'
 ]);

@@ -122,7 +122,7 @@ class OutTransactionsController extends Controller
         }
 
         $item_data = json_encode($cart_data);
-
+//dd($item_data);
         return redirect('/out-transactions')->withCookie('shopping_cart', $item_data, time() + (86400 * 30), '/out-transactions')->with('status', 'Berhasil masuk ke keranjang');
     }
 

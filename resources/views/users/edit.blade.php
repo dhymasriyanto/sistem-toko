@@ -11,7 +11,7 @@
                 </h1>
                 <div class="card">
                     <div class="card-body">
-                        <form method="post" action="/users/{{$user->id}}">
+                        <form  method="post" action="/users/{{$user->id}}">
                             @method('put')
                             @csrf
 
@@ -74,48 +74,49 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Ganti password</h5>
+                    <h5 class="modal-title"><span><i class="mr-2 align-middle" data-feather="info"></i></span><span
+                            class="align-middle">Ganti Password</span></h5>
                     <button type="button" class="close" data-dismiss="modal"
                             aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="/users/{{$user->id}}">
+                <form class="validation-form" method="post" action="/users/{{$user->id}}">
                     @method('put')
                     @csrf
                     <div class="modal-body m-3">
                         {{--                                                isi--}}
                         <div class="form-group">
-                            <label for="old-password">Password Lama</label>
-                            <input id="old-password" type="password"
-                                   class="form-control @error('old-password') is-invalid @enderror"
+                            <label for="old_password">Password Lama</label>
+                            <input id="old_password" type="password"
+                                   class="form-control @error('old_password') is-invalid @enderror"
                                    name="old_password" placeholder="Masukkan password lama"
-                                   required autocomplete="old-password">
+                                   required autocomplete="old_password">
 
-                            @error('old-password')
+                            @error('old_password')
                             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="new-password">Password Baru</label>
-                            <input id="new-password" type="password"
-                                   class="form-control @error('new-password') is-invalid @enderror"
+                            <label for="new_password">Password Baru</label>
+                            <input id="new_password" type="password"
+                                   class="form-control @error('new_password') is-invalid @enderror"
                                    name="password" placeholder="Masukkan password baru"
-                                   required autocomplete="new-password">
+                                   required autocomplete="new_password">
 
-                            @error('new-password')
+                            @error('new_password')
                             <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="password-confirm">Konfirmasi Password Baru</label>
-                            <input id="password-confirm" type="password" class="form-control"
+                            <label for="password_confirmation">Konfirmasi Password Baru</label>
+                            <input id="password_confirmation" type="password" class="form-control"
                                    name="password_confirmation" required
-                                   autocomplete="new-password"
+                                   autocomplete="new_password"
                                    placeholder="Konfirmasi password baru">
                         </div>
 

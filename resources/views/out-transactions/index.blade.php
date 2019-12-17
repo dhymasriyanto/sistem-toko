@@ -18,42 +18,16 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
-                                        <span class="mr-4 ml-2"><i class="feather-lg text-danger" data-feather="folder"></i></span>
+                                        <span class="mr-4 ml-2"><i class="feather-lg text-danger"
+                                                                   data-feather="folder"></i></span>
                                         <span><h5 class="card-title">Daftar Barang</h5>
                                         <h6 class="card-subtitle text-muted">Daftar barang pada gudang</h6>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    {{--                                    <table class="table table-responsive display table_id" id="example">--}}
-                                    {{--                                        <thead>--}}
-                                    {{--                                        <tr>--}}
-                                    {{--                                            <th> ID</th>--}}
-                                    {{--                                            <th style="width:40%;">Nama Barang</th>--}}
-                                    {{--                                            <th style="width:25%">Kategori</th>--}}
-                                    {{--                                            <th style="width:25%">Stok</th>--}}
-                                    {{--                                            <th style="width:25%">Satuan</th>--}}
-                                    {{--                                            <th class="d-none d-md-table-cell" style="width:25%">Harga</th>--}}
-                                    {{--                                            <th style="width:25%">Aksi</th>--}}
-                                    {{--                                        </tr>--}}
-                                    {{--                                        </thead>--}}
-                                    {{--                                        <tbody>--}}
-                                    {{--                                        @foreach($stuffs as $stuff)--}}
 
-                                    {{--                                            <tr>--}}
-                                    {{--                                                <td>{{$stuff->id}}</td>--}}
-                                    {{--                                                <td>{{$stuff->nama_barang}}</td>--}}
-                                    {{--                                                <td>{{$stuff->nama_kategori}}</td>--}}
-                                    {{--                                                <td>{{$stuff->jumlah_stok}}</td>--}}
-                                    {{--                                                <td>{{$stuff->nama_satuan}}</td>--}}
-                                    {{--                                                <td>@money($stuff->harga)</td>--}}
-                                    {{--                                                <td><a href="#"><i class="align-middle" data-feather="plus"></i></a>--}}
-                                    {{--                                                </td>--}}
-                                    {{--                                            </tr>--}}
-                                    {{--                                        @endforeach--}}
-                                    {{--                                        </tbody>--}}
-                                    {{--                                    </table>--}}
-                                    <form method="post" action="/out-transactions">
+                                    <form class="validation-form" method="post" action="/out-transactions">
                                         {{--                            @method('put')--}}
                                         @csrf
                                         <div class="form-group">
@@ -62,8 +36,8 @@
                                                     required>
                                                 <option value="{{null}}">Pilih barang</option>
                                                 @foreach($stuffs as $stuff)
-                                                    <option value="{{$stuff->id}}">{{$stuff->nama_barang}}
-                                                        @money($stuff->harga)/{{$stuff->nama_satuan}}
+                                                    <option value="{{$stuff->id}}">{{$stuff->nama_barang}} - Stok
+                                                        : {{$stuff->jumlah_stok}}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -72,7 +46,7 @@
                                         <div class="form-group">
                                             <label for="jumlah">Jumlah</label>
 
-                                            <input id="jumlah" type="text"
+                                            <input id="jumlah" type="number"
                                                    class="form-control @error('jumlah') is-invalid @enderror"
                                                    name="jumlah"
                                                    placeholder="Masukkan jumlah barang masuk"
@@ -86,7 +60,7 @@
                                             @enderror
                                         </div>
 
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <button type="submit" class="btn btn-primary">Masukkan ke keranjang</button>
 
                                     </form>
                                 </div>
@@ -100,7 +74,8 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="row">
-                                        <span class="mr-4 ml-2"><i class="feather-lg text-danger" data-feather="shopping-cart"></i></span>
+                                        <span class="mr-4 ml-2"><i class="feather-lg text-danger"
+                                                                   data-feather="shopping-cart"></i></span>
                                         <span><h5 class="card-title">Keranjang Belanja</h5>
                                         <h6 class="card-subtitle text-muted">Berikut daftar barang pada keranjang
                                             belanja.</h6></span>
@@ -111,8 +86,8 @@
                                     <form action="/out-transactions" method="post" class="d-inline">
                                         @method('delete')
                                         @csrf
-                                    <?php if (isset($_COOKIE["shopping_cart"])){
-?>
+                                        <?php if (isset($_COOKIE["shopping_cart"])){
+                                        ?>
                                         <button class=" my-3 fa-pull-right btn btn-danger"><i class="align-middle"
                                                                                               data-feather="trash"></i><span
                                                 class="align-middle ml-2">Hapus semua</span></button>
@@ -188,12 +163,18 @@
                                         ?>
                                         </tbody>
                                     </table>
-                                   <?php if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
-?>
+                                    <?php if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
+                                    ?>
                                     <a class="btn btn-primary fa-pull-right" data-toggle="modal" data-target="#belanja"
-                                       href=""><i class="align-middle" data-feather="shopping-cart"></i><span
-                                            class="align-middle ml-2">Belanja</span> </a>
-                                            <?php }?>
+                                       href="">
+                                        <i class="align-middle" data-feather="shopping-cart"></i>
+                                        <span class="align-middle ml-2">Belanja</span> </a>
+
+                                    <a class="mr-4 btn btn-danger fa-pull-right" data-toggle="modal"
+                                       data-target="#hutang" href="">
+                                        <i class="align-middle" data-feather="dollar-sign"></i>
+                                        <span class="align-middle ml-2">Hutang</span></a>
+                                    <?php }?>
                                 </div>
 
                             </div>
@@ -224,19 +205,19 @@
                 <form method="post" action="/histories">
                     {{--                    @method('put')--}}
                     <?php
-                    $nomor = rand(1000, 9999);
+                    $nomer = rand(1000, 9999);
                     $mytime = Carbon\Carbon::now();
                     $tanggal = $mytime->toDateString();
                     $waktu = date_format($mytime, 'YmdH');
-//                    dd($waktu);
+                    //                    dd($waktu);
                     ?>
                     @csrf
                     <div class="modal-body m-3">
                         <input hidden id="id_karyawan" type="text" name="id_karyawan" value="{{Auth::user()->id}}">
-                        <input hidden id="no_faktur" type="text" name="no_faktur" value="TRNS{{Auth::user()->id}}{{$waktu}}{{$nomor}}">
+                        <input hidden id="no_faktur" type="text" name="no_faktur"
+                               value="TRNS{{Auth::user()->id}}{{$waktu}}{{$nomer}}">
                         <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
 
-                        {{--                                                isi--}}
                         <span>Pastikan anda tidak lupa menerima uang pembayaran sebelum mengkonfirmasi</span>
                         <?php
                         if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
@@ -271,4 +252,191 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="hutang" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span><i class="mr-2 align-middle" data-feather="info"></i></span><span
+                            class="align-middle">Transaksi Hutang</span></h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="post" action="/debt-histories">
+                    {{--                    @method('put')--}}
+                    <?php
+                    $nomer = rand(1000, 9999);
+                    $mytime = Carbon\Carbon::now();
+                    $tanggal = $mytime->toDateString();
+                    $waktu = date_format($mytime, 'YmdH');
+                    //                    dd($waktu);
+                    ?>
+                    @csrf
+                    <div class="modal-body m-3">
+                        <input hidden id="id_karyawan" type="text" name="id_karyawan" value="{{Auth::user()->id}}">
+                        <input hidden id="no_faktur" type="text" name="no_faktur"
+                               value="HTG{{Auth::user()->id}}{{$waktu}}{{$nomer}}">
+                        <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
+                        <div class="form-group">
+                            <label for="nama_penghutang">Nama Penghutang</label>
+                            <input id="nama_penghutang" type="text"
+                                   class="form-control @error('nama_penghutang') is-invalid @enderror"
+                                   name="nama_penghutang" value="{{ old('nama_penghutang') }}" required
+                                   autocomplete="nama_penghutang" autofocus placeholder="Masukkan nama penghutang">
+
+                            @error('nama_penghutang')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nomer_ktp">Nomer KTP</label>
+                            <input id="nomer_ktp" type="text"
+                                   class="form-control @error('nomer_ktp') is-invalid @enderror"
+                                   name="nomer_ktp" value="{{ old('nomer_ktp') }}" required autocomplete="nomer_ktp"
+                                   autofocus placeholder="Masukkan nomer KTP penghutang">
+
+                            @error('nomer_ktp')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nomer_hp">Nomer HP</label>
+                            <input id="nomer_hp" type="text"
+                                   class="form-control @error('nomer_hp') is-invalid @enderror"
+                                   name="nomer_hp" value="{{ old('nomer_hp') }}" required autocomplete="nomer_hp"
+                                   autofocus placeholder="Masukkan nomer HP penghutang">
+
+                            @error('nomer_hp')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="alamat">Alamat</label>
+                            <textarea id="alamat" type="text" class="form-control @error('alamat') is-invalid @enderror"
+                                      name="alamat" value="{{ old('alamat') }}" required autocomplete="alamat" autofocus
+                                      placeholder="Masukkan alamat penghutang"></textarea>
+
+                            @error('alamat')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="datetimepicker-input">Tenggat Hutang</label>
+                            <div class="input-group date" id="datetimepicker-date" data-target-input="nearest">
+                                <input name="tenggat" type="text" class="form-control datetimepicker-input"
+                                       data-target="#datetimepicker-date" placeholder="Pilih tenggat hutang">
+                                <div class="input-group-append" data-target="#datetimepicker-date"
+                                     data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <span>Pastikan anda tidak lupa memasukkan data personal penghutang sebelum mengkonfirmasi</span>
+                        <?php
+                        if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
+
+                        $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                        $aa = Crypt::decryptString($cookie_data);
+                        $cart_data = json_decode($aa);
+
+                        foreach($cart_data as $keys){
+                        ?>
+
+                        <input hidden id="id{{$keys->item_id}}" type="text" name="id[]" value="{{$keys->item_id}}">
+                        <input hidden id="jml{{$keys->item_id}}" type="text" name="jml[]"
+                               value="{{$keys->item_quantity}}">
+                        <input hidden id="subtotal{{$keys->item_id}}" type="text" name="subtotal[]"
+                               value="{{$keys->item_quantity*$keys->item_price}}">
+                        <input hidden id="total" type="text" name="total" value="{{$total}}">
+
+                        <?php
+                        }
+                        }
+
+                        ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit" class="btn btn-danger">Lakukan Hutang</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script>
+        $(function () {
+            // Select2
+
+            // Daterangepicker
+            // $("input[name=\"daterange\"]").daterangepicker({
+            //     opens: "left"
+            // });
+            // $("input[name=\"datetimes\"]").daterangepicker({
+            //     timePicker: true,
+            //     opens: "left",
+            //     startDate: moment().startOf("hour"),
+            //     endDate: moment().startOf("hour").add(32, "hour"),
+            //     locale: {
+            //         format: "M/DD hh:mm A"
+            //     }
+            // });
+            // $("input[name=\"datesingle\"]").daterangepicker({
+            //     singleDatePicker: true,
+            //     showDropdowns: true
+            // });
+            // // Datetimepicker
+            // $('#datetimepicker-minimum').datetimepicker();
+            // $('#datetimepicker-view-mode').datetimepicker({
+            //     viewMode: 'years'
+            // });
+            // $('#datetimepicker-time').datetimepicker({
+            //     format: 'LT'
+            // });
+            $('#datetimepicker-date').datetimepicker({
+                format: 'L'
+            });
+            // var start = moment().subtract(29, "days");
+            // var end = moment();
+            //
+            // function cb(start, end) {
+            //     $("#reportrange span").html(start.format("MMMM D, YYYY") + " - " + end.format("MMMM D, YYYY"));
+            // }
+            //
+            // $("#reportrange").daterangepicker({
+            //     startDate: start,
+            //     endDate: end,
+            //     ranges: {
+            //         "Today": [moment(), moment()],
+            //         "Yesterday": [moment().subtract(1, "days"), moment().subtract(1, "days")],
+            //         "Last 7 Days": [moment().subtract(6, "days"), moment()],
+            //         "Last 30 Days": [moment().subtract(29, "days"), moment()],
+            //         "This Month": [moment().startOf("month"), moment().endOf("month")],
+            //         "Last Month": [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")]
+            //     }
+            // }, cb);
+            // cb(start, end);
+        });
+    </script>
+
 @endsection
