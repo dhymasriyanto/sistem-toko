@@ -17,8 +17,9 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('no_faktur');
             $table->date('tanggal_transaksi');
-            $table->integer('total');
-
+            $table->bigInteger('total');
+            $table->bigInteger('uang');
+            $table->bigInteger('kembalian');
             $table->timestamps();
         });
 

@@ -18,8 +18,9 @@ class CreateDebtTransactionsTable extends Migration
             $table->string('no_faktur');
             $table->date('tanggal_transaksi');
             $table->date('tenggat_hutang');
-            $table->integer('total');
-
+            $table->bigInteger('total');
+            $table->bigInteger('telah_bayar');
+            $table->bigInteger('sisa');
             $table->timestamps();
         });
 

@@ -16,7 +16,7 @@ class CreateDetailTransactionsTable extends Migration
         Schema::create('detail_transactions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('jumlah_barang');
-            $table->integer('harga');
+            $table->bigInteger('harga');
 
             $table->timestamps();
         });
