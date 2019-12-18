@@ -31,8 +31,8 @@
                         <i class="feather-lg text-primary" data-feather="shopping-cart"></i>
                     </div>
                     <div class="media-body">
-                        <h3 class="mb-2">2.562</h3>
-                        <div class="mb-0">Sales Today</div>
+                        <h3 class="text-primary mb-2">{{count($stuff)}} jenis</h3>
+                        <div class="text-primary mb-0">Jumlah Persediaan</div>
                     </div>
                 </div>
             </div>
@@ -43,11 +43,11 @@
             <div class="card-body py-4">
                 <div class="media">
                     <div class="d-inline-block mt-2 mr-3">
-                        <i class="feather-lg text-warning" data-feather="activity"></i>
+                        <i class="feather-lg text-success" data-feather="activity"></i>
                     </div>
                     <div class="media-body">
-                        <h3 class="mb-2">17.212</h3>
-                        <div class="mb-0">Visitors Today</div>
+                        <h3  class="text-success mb-2">@money($result)</h3>
+                        <div class="text-success mb-0">Keuntungan</div>
                     </div>
                 </div>
             </div>
@@ -58,11 +58,11 @@
             <div class="card-body py-4">
                 <div class="media">
                     <div class="d-inline-block mt-2 mr-3">
-                        <i class="feather-lg text-success" data-feather="dollar-sign"></i>
+                        <i class="feather-lg text-danger" data-feather="dollar-sign"></i>
                     </div>
                     <div class="media-body">
-                        <h3 class="mb-2">$ 24.300</h3>
-                        <div class="mb-0">Total Earnings</div>
+                        <h3 class="text-danger mb-2">@money($utang)</h3>
+                        <div class="text-danger mb-0">Total Hutang</div>
                     </div>
                 </div>
             </div>
@@ -73,47 +73,43 @@
             <div class="card-body py-4">
                 <div class="media">
                     <div class="d-inline-block mt-2 mr-3">
-                        <i class="feather-lg text-danger" data-feather="shopping-bag"></i>
+                        <i class="feather-lg text-warning" data-feather="shopping-bag"></i>
                     </div>
                     <div class="media-body">
-                        <h3 class="mb-2">43</h3>
-                        <div class="mb-0">Pending Orders</div>
+                        <h3  class="text-warning mb-2">{{count($penjualan)}}</h3>
+                        <div class="text-warning mb-0">Penjualan</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                Tenggat hutang terdekat : ALEX
-            </div>
-        </div>
-    </div>
-
-    <div class="col-12">
-        <div class="card flex-fill w-100">
-            <div class="card-header">
-                <h5 class="card-title">Laporan Terkini</h5>
-                <h6 class="card-subtitle text-muted">Berikut laporan terkini bulan kemarin.</h6>
-            </div>
+{{--    <div class="col-12">--}}
+{{--        <div class="card">--}}
 {{--            <div class="card-body">--}}
-{{--                <div class="chart">--}}
-{{--                    <canvas id="chartjs-line"></canvas>--}}
-{{--                </div>--}}
+{{--                Tenggat hutang terdekat :--}}
 {{--            </div>--}}
-        </div>
-    </div>
+{{--        </div>--}}
+{{--    </div>--}}
 
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                Persediaan mau habis : PAKU
-            </div>
-        </div>
-    </div>
-</div>
+{{--    <div class="col-12">--}}
+{{--        <div class="card flex-fill w-100">--}}
+{{--            <div class="card-header">--}}
+{{--                <h5 class="card-title">Laporan Terkini</h5>--}}
+{{--                <h6 class="card-subtitle text-muted">Berikut laporan terkini bulan kemarin.</h6>--}}
+{{--            </div>--}}
+
+{{--        </div>--}}
+{{--    </div>--}}
+
+{{--    <div class="col-12">--}}
+{{--        <div class="card">--}}
+{{--            <div class="card-body">--}}
+{{--                Persediaan mau habis : PAKU--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+{{--</div>--}}
 
 
 @endsection

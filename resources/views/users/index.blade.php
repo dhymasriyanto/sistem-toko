@@ -37,8 +37,8 @@
                                             @endif
                                     </td>
                                     <td>
-                                        <a  title="Edit data" href="{{url('users/'.$user->id.'/edit')}}"><span
-                                               ><i data-feather="edit"></i></span></a>
+{{--                                        <a  title="Edit data" href="{{url('users/'.$user->id.'/edit')}}"><span--}}
+{{--                                               ><i data-feather="edit"></i></span></a>--}}
 
                                         <a style="color: red" data-toggle="modal" title="Hapus data" data-target="#sizedModalSm{{$user->id}}">
                                             <i data-feather="trash"></i>

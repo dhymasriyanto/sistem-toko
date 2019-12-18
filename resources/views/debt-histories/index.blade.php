@@ -41,8 +41,8 @@
                                         <a style="color: green" href="{{url('debt-histories/'.$debtHistory->id)}}" title="Lihat riwayat">
                                             <span><i data-feather="clipboard"></i></span>
                                         </a>
-                                        <a  title="Edit riwayat" href="{{url('debt-histories/'.$debtHistory->id.'/edit')}}"><span
-                                            ><i data-feather="edit"></i></span></a>
+{{--                                        <a  title="Edit riwayat" href="{{url('debt-histories/'.$debtHistory->id.'/edit')}}"><span--}}
+{{--                                            ><i data-feather="edit"></i></span></a>--}}
                                     </td>
                                 </tr>
                             @endforeach

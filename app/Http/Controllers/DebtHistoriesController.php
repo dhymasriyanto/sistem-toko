@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\DebtHistory;
+use App\History;
+use App\Stuff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -92,7 +94,9 @@ class DebtHistoriesController extends Controller
             'tenggat_hutang'=>$date,
             'total' => $request['total'],
             'id_karyawan' => $request['id_karyawan'],
-            'id_penghutang'=>$id_penghutang
+            'id_penghutang'=>$id_penghutang,
+            'telah_bayar'=>$request->dp,
+            'sisa'=>$request->sisa
         ]);
         $no_fak = $request->no_faktur;
         $transaksi = DB::table('debt_transactions')
@@ -145,9 +149,10 @@ class DebtHistoriesController extends Controller
                 'nama_penghutang',
                 'nomer_hp',
                 'nomer_ktp',
-                'alamat'
+                'alamat',
+                'telah_bayar',
+                'sisa'
             ));
-//        dd($debtHistories);
         $detailDebtHistories = DB::table('detail_debt_transactions')
             ->join('debt_transactions', 'detail_debt_transactions.id_transaksi_hutang', '=', 'debt_transactions.id')
             ->join('stuffs', 'detail_debt_transactions.id_barang', '=', 'stuffs.id')
@@ -164,7 +169,7 @@ class DebtHistoriesController extends Controller
                 'nama_kategori'
             ));
 //        dd($debtHistories,$detailDebtHistories);
-        return view('debt-histories.show', compact('detailDebtHistories'),compact('debtHistories'));
+        return view('debt-histories.show', compact('detailDebtHistories'),compact('debtHistories','debtHistory'));
     }
 
     /**
@@ -175,8 +180,7 @@ class DebtHistoriesController extends Controller
      */
     public function edit(DebtHistory $debtHistory)
     {
-        //
-    }
+          }
 
     /**
      * Update the specified resource in storage.
@@ -187,7 +191,47 @@ class DebtHistoriesController extends Controller
      */
     public function update(Request $request, DebtHistory $debtHistory)
     {
-        //
+//dd($debtHistory->kembalian);
+        DebtHistory::where('id',$debtHistory->id)->update([
+            'telah_bayar'=>$debtHistory->telah_bayar+$request->dp,
+            'sisa'=>$request->sisa
+        ]);
+
+        if ($request->sisa == 0){
+            $a=History::create([
+                'no_faktur'=>$debtHistory->no_faktur,
+                'tanggal_transaksi'=>$request->tanggal,
+                'total'=>$debtHistory->total,
+                'id_karyawan'=>$debtHistory->id_karyawan,
+                'uang'=>$debtHistory->telah_bayar+$request->dp,
+                'kembalian'=>$request->kembalian
+            ]);
+//            dd($a->id);
+            $post = DB::table('detail_debt_transactions')->where('id_transaksi_hutang',$debtHistory->id)->get();
+
+            foreach ($post as $data){
+                DB::table('detail_transactions')->insert([
+                    'jumlah_barang'=>$data->jumlah_barang,
+                    'harga'=>$data->harga,
+                    'id_transaksi'=>$a->id,
+                    'id_barang'=>$data->id_barang
+
+                ]);
+                DB::table('detail_debt_transactions')->where('id_transaksi_hutang',$data->id)->delete();
+            }
+            // get all Post attributes
+//            $data = $post->attributesToArray();
+
+            // remove name and price attributes
+//            $data = array_except($data, ['name', 'price']);
+            // create new Order based on Post's data
+//            $order = Order::create($data);
+
+            DebtHistory::destroy($debtHistory->id);
+        }
+
+        return redirect('/histories/')->withCookie('shopping_cart',"[]",time()-360,'/out-transactions')->with('status', 'Transaksi berhasil');
+
     }
 
     /**

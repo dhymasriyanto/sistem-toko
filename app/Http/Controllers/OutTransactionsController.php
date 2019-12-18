@@ -26,18 +26,9 @@ class OutTransactionsController extends Controller
     public function index(OutTransaction $outTransaction)
     {
 
-        $stuffs = DB::table('stuffs')
-            ->join('categories', 'stuffs.id_kategori', '=', 'categories.id')
-            ->join('units', 'stuffs.id_satuan', '=', 'units.id')
-            ->get(array(
-                'stuffs.id',
-                'nama_barang',
-                'nama_kategori',
-                'nama_satuan',
-                'harga',
-                'jumlah_stok'
-            ));
-        return view('out-transactions.index', compact('stuffs', 'outTransaction'));
+        return response(view('out-transactions.index'));
+
+
     }
 
     /**
@@ -49,6 +40,35 @@ class OutTransactionsController extends Controller
     {
 //        dd('wewe');
 
+        $stuffs = Stuff::all();
+        foreach ($stuffs as $stuff) {
+            $item_array = array(
+                'item_id' => $stuff->id,
+                'item_name' => $stuff->nama_barang,
+                'item_price' => $stuff->harga,
+                'item_unit' => $stuff->nama_satuan,
+                'item_category' => $stuff->nama_kategori,
+                'item_stock' => $stuff->jumlah_stok
+            );
+            $stock_data[] = $item_array;
+        }
+        $stock_item_data = json_encode($stock_data);
+        if (isset($_COOKIE['shopping_cart'])) {
+            $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+            $aa = Crypt::decryptString($cookie_data);
+            $cart_data = json_decode($aa, true);
+            if ($cart_data != null) {
+                foreach ($cart_data as $keys => $values) {
+                    unset($cart_data[$keys]);
+                    $item_data = json_encode($cart_data);
+                }
+                return redirect('/out-transactions')->withCookie('shopping_cart', $item_data, time() + (86400 * 30), '/out-transactions')->withCookie('stock_cart', $stock_item_data, time() + (86400 * 30), '/out-transactions');
+            }
+
+        }
+        return redirect('/out-transactions')->withCookie('stock_cart', $stock_item_data, time() + (86400 * 30), '/out-transactions');
+
+
     }
 
     /**
@@ -59,6 +79,25 @@ class OutTransactionsController extends Controller
      */
     public function store(Request $request)
     {
+        $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
+        $aaa = Crypt::decryptString($cookie_data2);
+        $stock_data = json_decode($aaa, true);
+//        $tmp=
+//        dd($request->jumlah);
+        foreach ($stock_data as $keys => $values) {
+            if ($stock_data[$keys]["item_id"] == $request->id_barang) {
+                $tmp = $stock_data[$keys]['item_stock'];
+//dd($tmp);
+
+//                dd($tmp);
+                $stock_data[$keys]['item_stock'] -= $request->jumlah;
+//                dd($stock_data[$keys]['item_stock']);
+
+
+            }
+        }
+
+
         $request->validate([
             'id_barang' => ['required'],
             'jumlah' => ['required', 'numeric']
@@ -86,8 +125,9 @@ class OutTransactionsController extends Controller
         }
 
         $item_id_list = array_column($cart_data, 'item_id');
+//        dd($request->id_barang);
 //                $a=$stuff->jumlah_stok-$request->jumlah;
-        if ($request->jumlah > $stuff->jumlah_stok) {
+        if ($request->jumlah > $tmp) {
             return redirect('/out-transactions')->with('gagal', 'Permintaan melebihi jumlah stok gudang');
         } elseif ($request->jumlah == 0) {
             return redirect('/out-transactions')->with('gagal', 'Permintaan tidak boleh kosong');
@@ -102,8 +142,8 @@ class OutTransactionsController extends Controller
                         return redirect('/out-transactions')->with('gagal', 'Permintaan akan melebihi jumlah stok gudang');
                     } else {
 
+                        $cart_data[$keys]['item_stock'] = $tmp - $request->jumlah;
                         $cart_data[$keys]["item_quantity"] = $cart_data[$keys]["item_quantity"] + $request->jumlah;
-                        $cart_data[$keys]['item_stock'] = $cart_data[$keys]['item_stock'] - $request->jumlah;
                     }
 
                 }
@@ -116,14 +156,16 @@ class OutTransactionsController extends Controller
                 'item_quantity' => $request->jumlah,
                 'item_unit' => $satuan,
                 'item_category' => $kategori,
-                'item_stock' => $stok - $request->jumlah
+                'item_stock' => $tmp - $request->jumlah
             );
             $cart_data[] = $item_array;
         }
 
         $item_data = json_encode($cart_data);
+        $item_stock_data = json_encode($stock_data);
+
 //dd($item_data);
-        return redirect('/out-transactions')->withCookie('shopping_cart', $item_data, time() + (86400 * 30), '/out-transactions')->with('status', 'Berhasil masuk ke keranjang');
+        return redirect('/out-transactions')->withCookie('stock_cart', $item_stock_data, time() + (86400 * 30), '/out-transactions')->withCookie('shopping_cart', $item_data, time() + (86400 * 30), '/out-transactions')->with('status', 'Berhasil masuk ke keranjang');
     }
 
     /**
@@ -168,6 +210,36 @@ class OutTransactionsController extends Controller
     public function destroy(Request $request, Stuff $outTransaction)
     {
         //
+//dd($request->id_barang);
+        $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
+        $aaa = Crypt::decryptString($cookie_data2);
+        $stock_data = json_decode($aaa, true);
+//        dd($stock_data);
+        foreach ($stock_data as $keys => $values) {
+            if ($stock_data[$keys]["item_id"] == $request->id_barang) {
+
+                $stock_data[$keys]['item_stock'] += $request->jumlah;
+//                dd($stock_data[$keys]['item_stock']);
+            } else {
+                $jumlah = $request->jumlah;
+                $id_barang = $request->id_barang;
+                for ($i = 0; $i < count($id_barang); $i++) {
+                    $id = $id_barang[$i];
+                    $jml = $jumlah[$i];
+
+//            dump($id, $jml);
+                    if ($stock_data[$keys]["item_id"] == $id) {
+                        $stock_data[$keys]['item_stock'] += $jml;
+                    }
+                }
+//                dump($stock_data[$keys]['item_stock']);
+            }
+        }
+//        die;
+//        dd($tmp);
+        $item_stock_data = json_encode($stock_data);
+
+
 //        dd($outTransaction->id);
         $request->id = $outTransaction->id;
 //        dd(isset($request->id));
@@ -179,11 +251,12 @@ class OutTransactionsController extends Controller
                 if ($cart_data[$keys]['item_id'] == $request->id) {
                     unset($cart_data[$keys]);
                     $item_data = json_encode($cart_data);
+//                    dd($item_data);
 //                setcookie("shopping_cart", $item_data, time() + (86400 * 30));
 //                header("location:index.php?remove=1");
-                    return redirect('/out-transactions')->withCookie('shopping_cart', $item_data, time() + (86400 * 30), '/out-transactions')->with('status', 'Berhasil dikeluarkan dari keranjang');
                 }
             }
+            return redirect('/out-transactions')->withCookie('stock_cart', $item_stock_data, time() + (86400 * 30), '/out-transactions')->withCookie('shopping_cart', $item_data, time() + (86400 * 30), '/out-transactions')->with('status', 'Berhasil dikeluarkan dari keranjang');
         } else {
             if (isset($_COOKIE['shopping_cart'])) {
                 $cookie_data = stripslashes($_COOKIE['shopping_cart']);
@@ -194,7 +267,7 @@ class OutTransactionsController extends Controller
                         unset($cart_data[$keys]);
                         $item_data = json_encode($cart_data);
                     }
-                    return redirect('/out-transactions')->withCookie('shopping_cart', $item_data, time() - 3600, '/out-transactions')->with('status', 'Berhasil mengosongkan keranjang');
+                    return redirect('/out-transactions')->withCookie('stock_cart', $item_stock_data, time() + (86400 * 30), '/out-transactions')->withCookie('shopping_cart', $item_data, time() - 3600, '/out-transactions')->with('status', 'Berhasil mengosongkan keranjang');
                 } else {
                     return redirect('/out-transactions')->with('gagal', 'Keranjang kosong');
 

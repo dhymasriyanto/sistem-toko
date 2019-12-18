@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DebtHistory;
 use App\History;
 use App\Report;
 use Illuminate\Http\Request;
@@ -22,20 +23,18 @@ class ReportsController extends Controller
 
     public function index()
     {
-        $histories = History::all();
-//        dd($history);
+        $tahun=date("Y");
 
-//        $histories = DB::table('transactions')
-//            ->where(DB::raw('year(tanggal_transaksi)'),'2018')
-//            ->groupBy(DB::raw('year(tanggal_transaksi)'))
-//            ->get();
+        $utangs = DebtHistory::groupBy(DB::raw('MONTH(tanggal_transaksi)'))
+            ->selectRaw('sum(total) as total')
+            ->where(DB::raw('YEAR(tanggal_transaksi)'), '=', $tahun)->get();
+        $histories=History::groupBy(DB::raw('MONTH(tanggal_transaksi)'))
+        ->selectRaw('sum(total) as total , MONTH(tanggal_transaksi) as tanggal')
+        ->where(DB::raw('YEAR(tanggal_transaksi)'),'=',$tahun)->get();
+        $pengeluaran=DB::table('pengeluaran')->groupBy(DB::raw('MONTH(tanggal)'))
+            ->selectRaw('sum(pengeluaran) as total')
+            ->where(DB::raw('YEAR(tanggal)'),'=',$tahun)->get();
 
-//        dd($histories);
-
-//        foreach ($histories as $history)
-//        {
-////         dd($histories->tanggal_transaksi);
-//        }
 
         $dataTahun = [];
         $dataBulan = [];
@@ -44,10 +43,11 @@ class ReportsController extends Controller
             $dataBulan[substr($history->tanggal_transaksi, 5, 2)][] = $history->tanggal_transaksi;
             $dataTahun[substr($history->tanggal_transaksi, 0, 4)][] = substr($history->tanggal_transaksi, 5, 2);
         }
+//        dd($dataTahun);
 //              foreach($dataTahun as $index => $histories){
 //        }
 //        dd($dataTahun, $dataBulan);
-        return view('reports.index', compact('histories'),compact('dataTahun', 'dataBulan'));
+        return view('reports.index', compact('histories','utangs','pengeluaran'),compact('dataTahun', 'dataBulan'));
     }
 
     /**

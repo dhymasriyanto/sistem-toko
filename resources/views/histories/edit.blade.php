@@ -37,19 +37,18 @@
                                                     required>
                                                 <option value="{{null}}">Pilih barang</option>
 
-{{--                                                @foreach($stock_data as $stock)--}}
-{{--                                                    @dd($stock_data)--}}
+                                                {{--                                                @foreach($stock_data as $stock)--}}
+                                                {{--                                                    @dd($stock_data)--}}
 
-{{--                                                @foreach($stock_data as $stuff => $values)--}}
-{{--                                                    {{$a = $stuff->jumlah_stok}}--}}
+                                                {{--                                                @foreach($stock_data as $stuff => $values)--}}
+                                                {{--                                                    {{$a = $stuff->jumlah_stok}}--}}
 
                                                 <?php
 
                                                 use Illuminate\Support\Facades\Crypt;
                                                 //                                        dd($_COOKIE['shopping_cart']!="");
 
-                                                if (isset($_COOKIE['stock_cart']))
-                                                {
+                                                if (isset($_COOKIE['stock_cart'])) {
                                                     $test = Crypt::decryptString(stripslashes($_COOKIE['stock_cart']));
 
 //                                            echo $test;
@@ -67,19 +66,19 @@
                                                     : {{$keys->item_stock}}
                                                 </option>
 
-{{--                                                    <option value="{{$stock_data[$stuff]['item_id']}}">--}}
-{{--                                                        {{$stock_data[$stuff]['item_name']}} - Stok--}}
-{{--                                                        : {{$stock_data[$stuff]['item_stock']}}--}}
+                                                {{--                                                    <option value="{{$stock_data[$stuff]['item_id']}}">--}}
+                                                {{--                                                        {{$stock_data[$stuff]['item_name']}} - Stok--}}
+                                                {{--                                                        : {{$stock_data[$stuff]['item_stock']}}--}}
 
-{{--                                                        @if($stuff->id==Session::get('id'))--}}
-{{--                                                            {{$a+=Session::get('jmlh')}}--}}
-{{--                                                        @else--}}
-{{--                                                            {{$a}}--}}
-{{--                                                        @endif--}}
-{{--                                                                                                            @endforeach--}}
+                                                {{--                                                        @if($stuff->id==Session::get('id'))--}}
+                                                {{--                                                            {{$a+=Session::get('jmlh')}}--}}
+                                                {{--                                                        @else--}}
+                                                {{--                                                            {{$a}}--}}
+                                                {{--                                                        @endif--}}
+                                                {{--                                                                                                            @endforeach--}}
 
-{{--                                                    </option>--}}
-{{--                                                @endforeach--}}
+                                                {{--                                                    </option>--}}
+                                                {{--                                                @endforeach--}}
                                                 <?php  }
                                                 ?>
                                             </select>
@@ -130,11 +129,37 @@
                                         @method('delete')
                                         @csrf
                                         <?php if (isset($_COOKIE["shopping_cart"])){
+
+                                        //                                        use Illuminate\Support\Facades\Crypt;
+                                        //                                        dd($_COOKIE['shopping_cart']!="");
+                                        if (isset($_COOKIE["shopping_cart"])) {
+                                            $test = Crypt::decryptString(stripslashes($_COOKIE['shopping_cart']));
+                                        }
+
+                                        //                                                                                dd($test);
+                                        $total = 0;
+                                        $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                                        $aa = Crypt::decryptString($cookie_data);
+                                        $cart_data = json_decode($aa);
+                                        //                                        dd($cart_data);
+                                        foreach($cart_data as $keys)
+                                        {
+                                        //                                            dd($keys->item_name);
                                         ?>
+                                        <input hidden name="jumlah[]" value="{{$keys->item_quantity}}">
+                                        <input hidden name="id_barang[]" value="{{$keys->item_id}}">
+                                        <?php
+                                        }
+                                        ?>
+
                                         <button class=" my-3 fa-pull-right btn btn-danger"><i class="align-middle"
                                                                                               data-feather="trash"></i><span
                                                 class="align-middle ml-2">Hapus semua</span></button>
-                                        <?php } ?>
+                                        <?php
+
+
+
+                                        }?>
                                     </form>
                                     <table class="table table-responsive">
                                         <thead>
@@ -153,7 +178,7 @@
                                         <tbody>
 
                                         <?php
-//                                        use Illuminate\Support\Facades\Crypt;
+                                        //                                        use Illuminate\Support\Facades\Crypt;
                                         //                                        dd($_COOKIE['shopping_cart']!="");
                                         if (isset($_COOKIE["shopping_cart"])) {
                                             $test = Crypt::decryptString(stripslashes($_COOKIE['shopping_cart']));
@@ -186,16 +211,17 @@
                                                       class="d-inline">
                                                     @method('delete')
                                                     @csrf
-{{--                                                    <form action="/histories/create/{{$keys->item_id}}">--}}
-{{--                                                        @csrf--}}
+                                                    {{--                                                    <form action="/histories/create/{{$keys->item_id}}">--}}
+                                                    {{--                                                        @csrf--}}
 
-                                                    <input hidden name="jumlah" value="{{$keys->item_quantity}}">
-                                                    <input hidden name="id_barang" value="{{$keys->item_id}}">
-{{--                                                    </form>--}}
+                                                    <input hidden name="jumlah[]" value="{{$keys->item_quantity}}">
+                                                    <input hidden name="id_barang[]" value="{{$keys->item_id}}">
+                                                    {{--                                                    </form>--}}
 
                                                     <button type="submit" class=" btn btn-link"><i style="color: red"
-                                                                                     class="align-middle"
-                                                                                     data-feather="delete"></i></button>
+                                                                                                   class="align-middle"
+                                                                                                   data-feather="delete"></i>
+                                                    </button>
                                                 </form>
                                             {{--                                                <a href=""><span class="text-danger"></span></a></td>--}}
                                         </tr>
@@ -251,8 +277,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="/histories">
-                    {{--                    @method('put')--}}
+                <form id="form-uang" method="post" action="/histories/create">
+                    @method('put')
                     <?php
                     $nomer = rand(1000, 9999);
                     $mytime = Carbon\Carbon::now();
@@ -266,8 +292,40 @@
                         <input hidden id="no_faktur" type="text" name="no_faktur"
                                value="TRNS{{Auth::user()->id}}{{$waktu}}{{$nomer}}">
                         <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
+                        <div class="form-group">
+                            <label for="uang">Jumlah uang pembayaran</label>
+                            <div class="input-group">
 
-                        <span>Pastikan anda tidak lupa menerima uang pembayaran sebelum mengkonfirmasi</span>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input onkeyup="sum();" id="uang" type="number"
+                                       class="form-control @error('uang') is-invalid @enderror"
+                                       name="uang" value="" required
+                                       autocomplete="uang" autofocus placeholder="Masukkan jumlah uang pembayaran">
+                                @error('uang')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="kembalian">Kembalian</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input value=""  readonly id="kembalian" type="number"
+                                       class="form-control  @error('uang') is-invalid @enderror"
+                                       name="kembalian" placeholder="Kembalian">
+
+                            </div>
+
+                        </div>
+                        <span>Pastikan uang pembayaran dari riwayat data sebelumnya.</span><br>
                         <?php
                         if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
 
@@ -276,14 +334,20 @@
                         $cart_data = json_decode($aa);
 
                         foreach($cart_data as $keys){
+
                         ?>
 
+                        <input hidden id="transaction_id{{$keys->item_id}}" type="text" name="transaction_id[]"
+                               value="{{$keys->transaction_id}}">
                         <input hidden id="id{{$keys->item_id}}" type="text" name="id[]" value="{{$keys->item_id}}">
+                        <input hidden id="detail_id{{$keys->detail_id}}" type="text" name="detail_id[]"
+                               value="{{$keys->detail_id}}">
                         <input hidden id="jml{{$keys->item_id}}" type="text" name="jml[]"
                                value="{{$keys->item_quantity}}">
                         <input hidden id="subtotal{{$keys->item_id}}" type="text" name="subtotal[]"
                                value="{{$keys->item_quantity*$keys->item_price}}">
                         <input hidden id="total" type="text" name="total" value="{{$total}}">
+
 
                         <?php
                         }
@@ -295,7 +359,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             Batal
                         </button>
-                        <button type="submit" class="btn btn-danger">Bayar</button>
+                        <button type="submit" class="btn btn-danger">Perbarui riwayat</button>
                     </div>
                 </form>
             </div>
@@ -303,3 +367,28 @@
     </div>
 
 @endsection
+@section('js')
+    <script>
+
+        function sum() {
+            var txtFirstNumberValue = document.getElementById('uang').value;
+            var txtSecondNumberValue = document.getElementById('total').value;
+            var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('kembalian').value = result;
+            }
+
+            if (!isNaN(result2)) {
+                document.getElementById('sisa').value = result2;
+            }
+            var a =document.getElementById('sisa').value;
+            if(a<0){
+                document.getElementById('sisa').value = 0;
+            }
+
+        }
+
+
+    </script>
+
+    @endsection

@@ -26,6 +26,13 @@
                                 </select>
                             </div>
 
+                            <?php
+                            $mytime = Carbon\Carbon::now();
+                            $tanggal = $mytime->toDateString();
+                            $waktu = date_format($mytime, 'YmdH');
+                            ?>
+
+                            <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
                             <div class="form-group">
                                 <label for="jumlah_barang">Jumlah barang</label>
 

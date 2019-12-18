@@ -40,7 +40,7 @@
                 </a>
                 <ul id="transaksi" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                     <li class="sidebar-item {{ Request::is('in-transactions')  ? 'active' : '' }}"><a class="sidebar-link" href="{{url('/in-transactions')}}">Transaksi Masuk</a></li>
-                    <li class="sidebar-item {{ Request::is('out-transactions')  ? 'active' : '' }}"><a class="sidebar-link" href="{{url('/out-transactions')}}">Transaksi Keluar</a></li>
+                    <li class="sidebar-item {{ Request::is('out-transactions')  ? 'active' : '' }}"><a class="sidebar-link" href="{{url('/out-transactions/create')}}">Transaksi Keluar</a></li>
 
                 </ul>
             </li>

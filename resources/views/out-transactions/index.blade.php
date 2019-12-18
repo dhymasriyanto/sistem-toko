@@ -35,11 +35,50 @@
                                             <select class="form-control select2" id="id_barang" name="id_barang"
                                                     required>
                                                 <option value="{{null}}">Pilih barang</option>
-                                                @foreach($stuffs as $stuff)
-                                                    <option value="{{$stuff->id}}">{{$stuff->nama_barang}} - Stok
-                                                        : {{$stuff->jumlah_stok}}
-                                                    </option>
-                                                @endforeach
+                                                {{--                                                @foreach($stuffs as $stuff)--}}
+                                                {{--                                                    <option value="{{$stuff->id}}">{{$stuff->nama_barang}} - Stok--}}
+                                                {{--                                                        : {{$stuff->jumlah_stok}}--}}
+                                                {{--                                                    </option>--}}
+                                                {{--                                                @endforeach--}}
+
+                                                <?php
+
+                                                use Illuminate\Support\Facades\Crypt;
+                                                //                                        dd($_COOKIE['shopping_cart']!="");
+
+                                                if (isset($_COOKIE['stock_cart'])) {
+                                                    $test = Crypt::decryptString(stripslashes($_COOKIE['stock_cart']));
+
+//                                            echo $test;
+                                                }
+                                                $total2 = 0;
+                                                $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
+                                                $aaa = Crypt::decryptString($cookie_data2);
+                                                $stock_data = json_decode($aaa);
+                                                //                                        dd($cart_data);
+                                                foreach($stock_data as $keys)
+                                                {?>
+
+                                                <option value="{{$keys->item_id}}">
+                                                    {{$keys->item_name}} - Stok
+                                                    : {{$keys->item_stock}}
+                                                </option>
+
+                                                {{--                                                    <option value="{{$stock_data[$stuff]['item_id']}}">--}}
+                                                {{--                                                        {{$stock_data[$stuff]['item_name']}} - Stok--}}
+                                                {{--                                                        : {{$stock_data[$stuff]['item_stock']}}--}}
+
+                                                {{--                                                        @if($stuff->id==Session::get('id'))--}}
+                                                {{--                                                            {{$a+=Session::get('jmlh')}}--}}
+                                                {{--                                                        @else--}}
+                                                {{--                                                            {{$a}}--}}
+                                                {{--                                                        @endif--}}
+                                                {{--                                                                                                            @endforeach--}}
+
+                                                {{--                                                    </option>--}}
+                                                {{--                                                @endforeach--}}
+                                                <?php  }
+                                                ?>
                                             </select>
                                         </div>
 
@@ -86,12 +125,39 @@
                                     <form action="/out-transactions" method="post" class="d-inline">
                                         @method('delete')
                                         @csrf
+
                                         <?php if (isset($_COOKIE["shopping_cart"])){
+
+                                        //                                        use Illuminate\Support\Facades\Crypt;
+                                        //                                        dd($_COOKIE['shopping_cart']!="");
+                                        if (isset($_COOKIE["shopping_cart"])) {
+                                            $test = Crypt::decryptString(stripslashes($_COOKIE['shopping_cart']));
+                                        }
+
+                                        //                                                                                dd($test);
+                                        $total = 0;
+                                        $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                                        $aa = Crypt::decryptString($cookie_data);
+                                        $cart_data = json_decode($aa);
+                                        //                                        dd($cart_data);
+                                        foreach($cart_data as $keys)
+                                        {
+                                        //                                            dd($keys->item_name);
                                         ?>
+                                        <input hidden name="jumlah[]" value="{{$keys->item_quantity}}">
+                                        <input hidden name="id_barang[]" value="{{$keys->item_id}}">
+                                        <?php
+                                        }
+                                        ?>
+
                                         <button class=" my-3 fa-pull-right btn btn-danger"><i class="align-middle"
                                                                                               data-feather="trash"></i><span
                                                 class="align-middle ml-2">Hapus semua</span></button>
-                                        <?php } ?>
+                                        <?php
+
+
+
+                                        }?>
                                     </form>
                                     <table class="table table-responsive">
                                         <thead>
@@ -110,7 +176,7 @@
                                         <tbody>
 
                                         <?php
-                                        use Illuminate\Support\Facades\Crypt;
+                                        //                                        use Illuminate\Support\Facades\Crypt;
                                         //                                        dd($_COOKIE['shopping_cart']!="");
                                         if (isset($_COOKIE["shopping_cart"])) {
                                             $test = Crypt::decryptString(stripslashes($_COOKIE['shopping_cart']));
@@ -138,6 +204,9 @@
                                                       class="d-inline">
                                                     @method('delete')
                                                     @csrf
+
+                                                    <input hidden name="jumlah[]" value="{{$keys->item_quantity}}">
+                                                    <input hidden name="id_barang[]" value="{{$keys->item_id}}">
                                                     <button class=" btn btn-link"><i style="color: red"
                                                                                      class="align-middle"
                                                                                      data-feather="delete"></i></button>
@@ -202,7 +271,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="/histories">
+                <form class="form-uang" method="post" action="/histories">
                     {{--                    @method('put')--}}
                     <?php
                     $nomer = rand(1000, 9999);
@@ -218,7 +287,40 @@
                                value="TRNS{{Auth::user()->id}}{{$waktu}}{{$nomer}}">
                         <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
 
-                        <span>Pastikan anda tidak lupa menerima uang pembayaran sebelum mengkonfirmasi</span>
+                        <div class="form-group">
+                            <label for="uang">Jumlah uang pembayaran</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input onkeyup="sum();" id="uang" type="number"
+                                       class="form-control @error('uang') is-invalid @enderror"
+                                       name="uang" value="{{ old('uang') }}" required
+                                       autocomplete="uang" autofocus placeholder="Masukkan jumlah uang pembayaran">
+                                @error('uang')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="kembalian">Kembalian</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input readonly id="kembalian" type="number"
+                                       class="form-control  @error('uang') is-invalid @enderror"
+                                       name="kembalian" placeholder="Kembalian">
+
+                            </div>
+
+                        </div>
+                        <span>Pastikan anda tidak lupa menerima uang pembayaran</span>
                         <?php
                         if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
 
@@ -264,7 +366,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="post" action="/debt-histories">
+                <form id="form-utang" class="form-uang" method="post" action="/debt-histories">
                     {{--                    @method('put')--}}
                     <?php
                     $nomer = rand(1000, 9999);
@@ -295,7 +397,7 @@
 
                         <div class="form-group">
                             <label for="nomer_ktp">Nomer KTP</label>
-                            <input id="nomer_ktp" type="text"
+                            <input id="nomer_ktp" type="number" maxlength="16"
                                    class="form-control @error('nomer_ktp') is-invalid @enderror"
                                    name="nomer_ktp" value="{{ old('nomer_ktp') }}" required autocomplete="nomer_ktp"
                                    autofocus placeholder="Masukkan nomer KTP penghutang">
@@ -309,7 +411,7 @@
 
                         <div class="form-group">
                             <label for="nomer_hp">Nomer HP</label>
-                            <input id="nomer_hp" type="text"
+                            <input id="nomer_hp" type="number" maxlength="12"
                                    class="form-control @error('nomer_hp') is-invalid @enderror"
                                    name="nomer_hp" value="{{ old('nomer_hp') }}" required autocomplete="nomer_hp"
                                    autofocus placeholder="Masukkan nomer HP penghutang">
@@ -346,6 +448,39 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <label for="dp">Jumlah uang muka</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input onkeyup="sum();" id="dp" type="number"
+                                       class="form-control @error('dp') is-invalid @enderror"
+                                       name="dp" value="{{ old('dp') }}" required
+                                       autocomplete="uang" autofocus placeholder="Masukkan jumlah uang muka">
+                                @error('dp')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="sisa">Sisa hutang</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input readonly id="sisa" type="number"
+                                       class="form-control  @error('dp') is-invalid @enderror"
+                                       name="sisa" placeholder="Sisa hutang">
+
+                            </div>
+
+                        </div>
 
                         <span>Pastikan anda tidak lupa memasukkan data personal penghutang sebelum mengkonfirmasi</span>
                         <?php
@@ -363,7 +498,7 @@
                                value="{{$keys->item_quantity}}">
                         <input hidden id="subtotal{{$keys->item_id}}" type="text" name="subtotal[]"
                                value="{{$keys->item_quantity*$keys->item_price}}">
-                        <input hidden id="total" type="text" name="total" value="{{$total}}">
+                        <input hidden id="total2" type="text" name="total" value="{{$total}}">
 
                         <?php
                         }
@@ -384,36 +519,75 @@
 @endsection
 
 @section('js')
+
+    <script>
+
+        function sum() {
+            var txtFirstNumberValue = document.getElementById('uang').value;
+            var txtSecondNumberValue = document.getElementById('total').value;
+            var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
+            if (!isNaN(result)) {
+                document.getElementById('kembalian').value = result;
+            }
+            var txtFirstNumberValue2 = document.getElementById('dp').value;
+            var txtSecondNumberValue2 = document.getElementById('total2').value;
+            var result2 = parseInt(txtSecondNumberValue2)-parseInt(txtFirstNumberValue2);
+            if (!isNaN(result2)) {
+                document.getElementById('sisa').value = result2;
+            }
+            var a =document.getElementById('sisa').value;
+            if(a<0){
+                document.getElementById('sisa').value = 0;
+
+            }
+
+        }
+
+
+    </script>
+    <script>
+
+    </script>
     <script>
         $(function () {
-            // Select2
-
-            // Daterangepicker
-            // $("input[name=\"daterange\"]").daterangepicker({
-            //     opens: "left"
-            // });
-            // $("input[name=\"datetimes\"]").daterangepicker({
-            //     timePicker: true,
-            //     opens: "left",
-            //     startDate: moment().startOf("hour"),
-            //     endDate: moment().startOf("hour").add(32, "hour"),
-            //     locale: {
-            //         format: "M/DD hh:mm A"
+            // $(".form-uang").validate({
+            //     focusInvalid: false,
+            //     rules: {
+            //         "kembalian": {
+            //             required: true,
+            //             number: true,
+            //             lessThanEquals:0
+            //         }
             //     }
             // });
-            // $("input[name=\"datesingle\"]").daterangepicker({
-            //     singleDatePicker: true,
-            //     showDropdowns: true
-            // });
-            // // Datetimepicker
-            // $('#datetimepicker-minimum').datetimepicker();
-            // $('#datetimepicker-view-mode').datetimepicker({
-            //     viewMode: 'years'
-            // });
-            // $('#datetimepicker-time').datetimepicker({
-            //     format: 'LT'
-            // });
-            $('#datetimepicker-date').datetimepicker({
+                // Select2
+
+                // Daterangepicker
+                // $("input[name=\"daterange\"]").daterangepicker({
+                //     opens: "left"
+                // });
+                // $("input[name=\"datetimes\"]").daterangepicker({
+                //     timePicker: true,
+                //     opens: "left",
+                //     startDate: moment().startOf("hour"),
+                //     endDate: moment().startOf("hour").add(32, "hour"),
+                //     locale: {
+                //         format: "M/DD hh:mm A"
+                //     }
+                // });
+                // $("input[name=\"datesingle\"]").daterangepicker({
+                //     singleDatePicker: true,
+                //     showDropdowns: true
+                // });
+                // // Datetimepicker
+                // $('#datetimepicker-minimum').datetimepicker();
+                // $('#datetimepicker-view-mode').datetimepicker({
+                //     viewMode: 'years'
+                // });
+                // $('#datetimepicker-time').datetimepicker({
+                //     format: 'LT'
+                // });
+                $('#datetimepicker-date').datetimepicker({
                 format: 'L'
             });
             // var start = moment().subtract(29, "days");
@@ -436,7 +610,8 @@
             //     }
             // }, cb);
             // cb(start, end);
-        });
+        })
+            ;
     </script>
 
 @endsection

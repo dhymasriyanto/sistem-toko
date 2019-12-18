@@ -84,9 +84,37 @@
                                 @endforeach
                             </td>
                         </tr>
+                        <tr>
+                            <td>Dibayar</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                @foreach($histories as $history)
+                                    @money($history->uang)
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kembalian</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                @foreach($histories as $history)
+                                    @money($history->kembalian)
+                                @endforeach
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
-
+                    <a class="mr-4 btn btn-danger fa-pull-right" href="/histories">
+                        <i class="align-middle"></i>
+                        <span class="align-middle ml-2">Kembali</span></a>
                 </div>
             </div>
         </div>

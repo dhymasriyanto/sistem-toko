@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Stuff;
 use App\InTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InTransactionsController extends Controller
 {
@@ -46,14 +47,27 @@ class InTransactionsController extends Controller
             'id_barang' => 'required',
             'jumlah_barang' => ['required','numeric']
         ]);
+
         $value = $request['jumlah_barang'];
         $id = $request['id_barang'];
+        $barang=Stuff::where('id', $id)->get();
+        foreach ($barang as $b => $v){
+        $result = $value * $v->harga;
+        }
+
 //        dd($value, $id);
+        DB::table('pengeluaran')->insert([
+            'pengeluaran'=>$result,
+            'tanggal'=> $request->tanggal
+        ]);
+
 
         Stuff::where('id', $id)
             ->increment(
                 'jumlah_stok', $value
             );
+
+
 
         return redirect('/stuffs')->with('status', 'Transaksi berhasil');
     }

@@ -22,8 +22,10 @@ Route::resource('users', 'UsersController')->except([
 Route::resource('stuffs', 'StuffsController');
 Route::resource('categories', 'CategoriesController');
 Route::resource('debt-histories', 'DebtHistoriesController');
+
+Route::put('/histories/create', 'HistoriesController@update');
 Route::delete('/histories/create/{history}', 'HistoriesController@destroy');
-Route::delete('/histories/create/', 'HistoriesController@destroy');
+Route::delete('/histories/create', 'HistoriesController@destroy');
 Route::post('/histories/create', 'HistoriesController@keranjang');
 Route::resource('histories', 'HistoriesController');
 Route::resource('profiles', 'ProfilesController')->except([
@@ -32,6 +34,8 @@ Route::resource('profiles', 'ProfilesController')->except([
 Route::resource('in-transactions', 'InTransactionsController')->only([
     'index','store'
 ]);
+//Route::post('/out-transactions/create', 'OutTransactionsController@store');
+
 Route::delete('/out-transactions', 'OutTransactionsController@destroy');
 Route::resource('out-transactions', 'OutTransactionsController');
 

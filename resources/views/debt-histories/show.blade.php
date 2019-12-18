@@ -16,6 +16,7 @@
         <div class="container-fluid p-0">
             <div class="card">
                 <div class="card-body">
+
                     {{--                        @foreach($debtHistories as $debtHistory)--}}
                     {{--                            {{$debtHistory->name}}--}}
                     {{--                        @endforeach--}}
@@ -73,7 +74,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        <table  class="col-md-4">
+                        <table class="col-md-4">
                             @foreach($debtHistories as $debtHistory)
                                 <tr>
                                     <td width="50%">Nomer KTP</td>
@@ -87,6 +88,22 @@
                                     <td width="5%">:</td>
                                     <td>
                                         {{$debtHistory->nomer_hp}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%">Tenggat</td>
+                                    <td width="5%">:</td>
+                                    <td style="color: red">
+                                        <?php
+                                        $now = time();
+                                        ?>
+
+                                        @if(round((strtotime($debtHistory->tenggat_hutang)-$now)/(60 * 60 * 24))<=0)
+                                            HARI INI!!
+                                        @else
+                                            {{round((strtotime($debtHistory->tenggat_hutang)-$now)/(60 * 60 * 24))}}
+                                            hari lagi
+                                        @endif
                                     </td>
                                 </tr>
 
@@ -130,20 +147,170 @@
                                 <span style="color: red">
 
                                 @foreach($debtHistories as $debtHistory)
-                                    @money($debtHistory->total)
-                                @endforeach
+                                        @money($debtHistory->total)
+                                    @endforeach
+
                                 </span>
                             </td>
+
                         </tr>
+                        <tr>
+                            <td>Telah dibayar</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="color: mediumseagreen">
+                                @foreach($debtHistories as $debtHistory)
+                                    @money($debtHistory->telah_bayar)
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sisa Hutang</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="color: red">
+                                @foreach($debtHistories as $history)
+                                    @money($debtHistory->sisa)
+                                @endforeach
+                                <input hidden value="{{$debtHistory->sisa}}" id="sisaa">
+                            </td>
+                        </tr>
+
                         </tbody>
                     </table>
+                    <br>
+
+                    <a class="mr-4 btn btn-success fa-pull-right" data-toggle="modal"
+                       data-target="#hutang" href="">
+                        <i class="align-middle" data-feather="dollar-sign"></i>
+                        <span class="align-middle ml-2">Bayar Hutang</span></a>
+
+                    <a class="mr-4 btn btn-danger fa-pull-right" href="/debt-histories">
+                        <i class="align-middle"></i>
+                        <span class="align-middle ml-2">Kembali</span></a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="hutang" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span><i class="mr-2 align-middle" data-feather="info"></i></span><span
+                            class="align-middle">Bayar Hutang</span></h5>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="form-utang" class="form-uang" method="post" action="/debt-histories/{{$debtHistory->id}}">
+                    @method('put')
+                    @csrf
+
+                    <?php
+                    $mytime = Carbon\Carbon::now();
+                    $tanggal = $mytime->toDateString();
+                    $waktu = date_format($mytime, 'YmdH');
+                    ?>
+                    <div class="modal-body m-3">
+                        <input hidden id="id" type="text" name="id" value="{{$debtHistory->id}}">
+
+                        <input hidden id="tanggal" type="text" name="tanggal" value="{{$tanggal}}">
+
+                        <div class="form-group">
+                            <label for="dp">Jumlah uang pembayaran</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input onkeyup="sum();" id="dp" type="number"
+                                       class="form-control @error('dp') is-invalid @enderror"
+                                       name="dp" value="{{ old('dp') }}" required
+                                       autocomplete="uang" autofocus placeholder="Masukkan jumlah uang muka">
+                                @error('dp')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="sisa">Sisa hutang</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input value="{{$debtHistory->sisa}}" readonly id="sisa" type="number"
+                                       class="form-control  @error('dp') is-invalid @enderror"
+                                       name="sisa" placeholder="Sisa hutang">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kembalian">Kembalian (jika ada)</label>
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Rp</span>
+                                </div>
+                                <input value="0" readonly id="kembalian" type="number"
+                                       class="form-control  @error('dp') is-invalid @enderror"
+                                       name="kembalian" placeholder="Kembalian">
+
+                            </div>
+
+                        </div>
+
+                        <span>Pastikan jumlah uang sudah benar</span>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit" class="btn btn-success">Lakukan Pembayaran</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 @endsection
 
 @section('js')
+
+
+    <script !src="">
+        function sum() {
+
+            var txtFirstNumberValue2 = document.getElementById('dp').value;
+            var txtSecondNumberValue2 = document.getElementById('sisaa').value;
+            var result2 = parseInt(txtSecondNumberValue2) - parseInt(txtFirstNumberValue2);
+            if (!isNaN(result2)) {
+                document.getElementById('sisa').value = result2;
+            }
+            // var a =document.getElementById('sisa').value;
+
+            if (result2 <= 0) {
+                document.getElementById('sisa').value = 0;
+                document.getElementById('kembalian').value = Math.abs(result2);
+
+            }
+
+
+        }
+    </script>
     <script !src="">
         $(document).ready(function () {
             $('.example').DataTable({
@@ -238,4 +405,4 @@
         });
 
     </script>
-    @endsection
+@endsection
