@@ -17,7 +17,7 @@ class InTransactionsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Karyawan']);
     }
     public function index()
     {
@@ -58,7 +58,10 @@ class InTransactionsController extends Controller
 //        dd($value, $id);
         DB::table('pengeluaran')->insert([
             'pengeluaran'=>$result,
-            'tanggal'=> $request->tanggal
+            'tanggal'=> $request->tanggal,
+            'id_barang'=>$request->id_barang,
+            'id_karyawan'=>$request->id_karyawan,
+            'jumlah'=>$request->jumlah_barang
         ]);
 
 
@@ -69,7 +72,7 @@ class InTransactionsController extends Controller
 
 
 
-        return redirect('/stuffs')->with('status', 'Transaksi berhasil');
+        return redirect('/in-transactions')->with('status', 'Transaksi berhasil');
     }
 
     /**

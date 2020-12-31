@@ -47,7 +47,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username</label>
-                                            <input id="username" type="text"
+                                            <input @if(Auth::user()->username == "admin") readonly="readonly" @endif id="username" type="text"
                                                    class="form-control @error('username') is-invalid @enderror"
                                                    name="username" placeholder="Masukkan username pengguna"
                                                    value="{{ $profile->username }}" required autocomplete="username"
@@ -62,13 +62,13 @@
 
                                         <div class="form-group">
                                             <label for="level_akses">Level Akses</label>
-                                            <select class="form-control" id="level_akses" name="level_akses" required>
+                                            <select  class="form-control" id="level_akses" name="level_akses" required>
                                                 <option value="{{null}}">Pilih level akses pengguna</option>
                                                 <?php
                                                 $levelAkses = array("Pemilik Toko", "Karyawan");
                                                 ?>
                                                 @foreach($levelAkses as $v)
-                                                    <option
+                                                    <option @if($v == "Pemilik Toko" && Auth::user()->username != "admin") disabled @endif
                                                         value="{{$v}}" {{$v ==$profile->level_akses  ? 'selected' : ''}} >{{$v}}</option>
                                                 @endforeach
                                             </select>

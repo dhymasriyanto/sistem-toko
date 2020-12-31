@@ -38,20 +38,17 @@
                                     </span>
                                 @enderror
                             </div>
-
+                            <input hidden type="text" name="level_akses" value="Karyawan">
                             <div class="form-group">
-                                <label for="level_akses">Level Akses</label>
-                                <select class="form-control" id="level_akses" name="level_akses" required>
-                                    <option value="{{null}}" >Pilih level akses pengguna</option>
-                                <?php
-                                    $levelAkses = array("Pemilik Toko", "Karyawan");
-                                    ?>
-                                        @foreach($levelAkses as $level)
-                                    <option value="{{$level}}">{{$level}}</option>
+                                <label for="id_grup">Grup</label>
+                                <select class="form-control select2" id="id_grup" name="id_grup" required>
+                                    <option value="{{null}}" >Pilih grup</option>
+
+                                    @foreach($groups as $group)
+                                        <option value="{{$group->id}}">{{$group->nama_grup}}</option>
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input id="password" type="password"

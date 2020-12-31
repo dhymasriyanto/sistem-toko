@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DebtHistory;
 use App\History;
 use App\Stuff;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,13 +41,28 @@ class HomeController extends Controller
             ->selectRaw('sum(pengeluaran) as total')
             ->where(DB::raw('YEAR(tanggal)'), '=', $tahun)->get();
 
-        foreach ($pengeluaran as $keluar) {
+
+        $result = 0;
+        if (isset($histories)) {
             foreach ($histories as $history => $data) {
-                $result = $histories[$history]['total'] - $keluar->total;
-                break;
+                $result = $histories[$history]['total'];
             }
         }
 
+        if (isset($pengeluaran)){
+            foreach ($pengeluaran as $keluar) {
+                $result -= $keluar->total;
+            }
+        }
+
+
+//        foreach ($histories as $history => $data) {
+//            foreach ($pengeluaran as $keluar) {
+//                $result = $histories[$history]['total'] - $keluar->total;
+//                break;
+//            }
+//        }
+        $utang= null;
 
         $utangs = DebtHistory::groupBy(DB::raw('YEAR(tanggal_transaksi)'))
             ->selectRaw('sum(total) as total')
@@ -57,8 +73,11 @@ class HomeController extends Controller
             $utang = $utangs[$history]['total'];
             break;
         }
+        $pembelian = DB::table('pengeluaran');
+        $penghutang = DB::table('debtors')->get();
+        $karyawan = User::all()->where('username','<>' ,'admin');
         $penjualan = History::all();
         $stuff = Stuff::all();
-        return view('home', compact('hour', 'timezone', 'stuff', 'result', 'utang', 'penjualan'));
+        return view('home', compact('hour', 'timezone', 'stuff', 'result', 'utang', 'penjualan','pengeluaran','karyawan','penghutang'));
     }
 }

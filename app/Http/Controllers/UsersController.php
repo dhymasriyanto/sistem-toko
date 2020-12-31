@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use Illuminate\Http\Request;
 use App\User;
 //use App\Employee;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -19,12 +21,25 @@ class UsersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Pemilik Toko']);
     }
 
     public function index()
     {
-        $users = User::all();
+        $users = DB::table('users')
+        ->join('groups','users.id_grup','=','groups.id')
+        ->get(
+            array(
+                'users.id',
+                'name',
+                'username',
+                'level_akses',
+                'nama_grup'
+            )
+        );
+
+//        dd($users);
+//        $users = User::all();
 //        return view('users.index', ['users'=>$users]);
 //        boleh juga gini
         return view('users.index', compact('users'));
@@ -37,7 +52,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $groups = Group::all();
+        return view('users.create', compact('groups'));
     }
 
     /**
@@ -74,6 +90,7 @@ class UsersController extends Controller
                 'name' => ['required', 'string', 'max:255'],
                 'username' => ['required', 'string', 'max:255', 'unique:users'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'id_grup' => 'required',
                 'level_akses' => 'required',
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
@@ -82,6 +99,7 @@ class UsersController extends Controller
                 'name' => $request['name'],
 //            'email' => $data['email'],
                 'username' => $request['username'],
+                'id_grup' => $request['id_grup'],
                 'level_akses' => $request['level_akses'],
                 'password' => Hash::make($request['password']),
             ]);
@@ -172,6 +190,7 @@ class UsersController extends Controller
                     'name' => ['required', 'string', 'max:255'],
                     'username' => ['required', 'string', 'max:255'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'id_grup' => 'required',
                     'level_akses' => 'required',
 //                'password' => ['required', 'string', 'min:8', 'confirmed'],
                 ]);
@@ -181,6 +200,7 @@ class UsersController extends Controller
                         'name' => $request['name'],
 //            'email' => $data['email'],
                         'username' => $request['username'],
+                        'id_grup' => $request['id_grup'],
                         'level_akses' => $request['level_akses'],
 //                    'password' => Hash::make($request['password']),
                     ]);
@@ -189,6 +209,7 @@ class UsersController extends Controller
                     'name' => ['required', 'string', 'max:255'],
                     'username' => ['required', 'string', 'max:255', 'unique:users'],
 //            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                    'id_grup' => 'required',
                     'level_akses' => 'required',
 //                'password' => ['required', 'string', 'min:8', 'confirmed'],
                 ]);
@@ -198,6 +219,7 @@ class UsersController extends Controller
                         'name' => $request['name'],
 //            'email' => $data['email'],
                         'username' => $request['username'],
+                        'id_grup' => $request['id_grup'],
                         'level_akses' => $request['level_akses'],
 //                    'password' => Hash::make($request['password']),
                     ]);

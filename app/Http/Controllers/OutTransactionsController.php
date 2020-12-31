@@ -20,7 +20,7 @@ class OutTransactionsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Karyawan']);
     }
 
     public function index(OutTransaction $outTransaction)
@@ -39,7 +39,7 @@ class OutTransactionsController extends Controller
     public function create()
     {
 //        dd('wewe');
-
+        
         $stuffs = Stuff::all();
         foreach ($stuffs as $stuff) {
             $item_array = array(
@@ -215,6 +215,8 @@ class OutTransactionsController extends Controller
         $aaa = Crypt::decryptString($cookie_data2);
         $stock_data = json_decode($aaa, true);
 //        dd($stock_data);
+
+
         foreach ($stock_data as $keys => $values) {
             if ($stock_data[$keys]["item_id"] == $request->id_barang) {
 
@@ -270,7 +272,6 @@ class OutTransactionsController extends Controller
                     return redirect('/out-transactions')->withCookie('stock_cart', $item_stock_data, time() + (86400 * 30), '/out-transactions')->withCookie('shopping_cart', $item_data, time() - 3600, '/out-transactions')->with('status', 'Berhasil mengosongkan keranjang');
                 } else {
                     return redirect('/out-transactions')->with('gagal', 'Keranjang kosong');
-
                 }
             } else {
                 return redirect('/out-transactions')->with('gagal', 'Keranjang kosong');

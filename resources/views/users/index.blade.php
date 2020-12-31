@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengguna')
+@section('title', 'Karyawan')
 
 @section('content')
     <div class="container-fluid p-0">
@@ -8,7 +8,7 @@
             <div class="col-12 col-lg-12">
 
                 <h1 class="h3 mb-3">
-                    Daftar Pengguna
+                    Daftar Karyawan
                 </h1>
                 <div class="card">
                     <div class="card-body">
@@ -19,6 +19,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Username</th>
+                                <th scope="col">Grup</th>
                                 <th scope="col">Level Akses</th>
                                 <th scope="col">Aksi</th>
                             </tr>
@@ -29,6 +30,7 @@
                                     <td scope="row">{{$loop->iteration}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->username}}</td>
+                                    <td>{{$user->nama_grup}}</td>
                                     <td>
                                         @if($user->level_akses=='Pemilik Toko')
                                         <span class="badge badge-primary">{{$user->level_akses}}</span>
@@ -39,10 +41,11 @@
                                     <td>
 {{--                                        <a  title="Edit data" href="{{url('users/'.$user->id.'/edit')}}"><span--}}
 {{--                                               ><i data-feather="edit"></i></span></a>--}}
-
+                                        @if(Auth::user()->level_akses!=$user->level_akses)
                                         <a style="color: red" data-toggle="modal" title="Hapus data" data-target="#sizedModalSm{{$user->id}}">
                                             <i data-feather="trash"></i>
                                         </a>
+                                        @endif
                                         {{--                                            <button type="button" class="btn btn-danger">Hapus</button>--}}
                                         <div class="modal fade" id="sizedModalSm{{$user->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                             <div class="modal-dialog modal-sm" role="document">

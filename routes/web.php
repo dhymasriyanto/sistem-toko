@@ -17,17 +17,22 @@ Route::resource('/', 'HomeController')->only([
     'index'
 ]);
 Route::resource('users', 'UsersController')->except([
-    'show'
+    'show', 'edit'
 ]);
+
+Route::resource('groups', 'GroupsController');
 Route::resource('stuffs', 'StuffsController');
 Route::resource('categories', 'CategoriesController');
-Route::resource('debt-histories', 'DebtHistoriesController');
-
+Route::resource('debt-histories', 'DebtHistoriesController')->except([
+    'edit','destroy','create'
+]);
 Route::put('/histories/create', 'HistoriesController@update');
 Route::delete('/histories/create/{history}', 'HistoriesController@destroy');
 Route::delete('/histories/create', 'HistoriesController@destroy');
 Route::post('/histories/create', 'HistoriesController@keranjang');
-Route::resource('histories', 'HistoriesController');
+Route::resource('histories', 'HistoriesController')->except([
+    'edit','update','destroy','create'
+]);
 Route::resource('profiles', 'ProfilesController')->except([
     'create', 'store', 'destroy'
 ]);
@@ -37,9 +42,13 @@ Route::resource('in-transactions', 'InTransactionsController')->only([
 //Route::post('/out-transactions/create', 'OutTransactionsController@store');
 
 Route::delete('/out-transactions', 'OutTransactionsController@destroy');
-Route::resource('out-transactions', 'OutTransactionsController');
+Route::resource('out-transactions', 'OutTransactionsController')->except([
+    'show','edit','update', 'show'
+]);
 
-Route::resource('reports', 'ReportsController');
+Route::resource('reports', 'ReportsController')->only(
+    'index'
+);
 Route::resource('units', 'UnitsController');
 
 //Route::get('/', 'HomeController@index')->name('home');

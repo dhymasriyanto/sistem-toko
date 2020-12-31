@@ -25,15 +25,13 @@
     <script>
         $(function () {
             // Line chart
-
+            var high=0;
             new Chart(document.getElementById("chartjs-line"), {
                 type: "line",
                 data: {
                     labels: [
                         @for($i=1; $i<=12;$i++)
-
                         @foreach($histories as $history =>$data)
-                        {{--                        @dd($histories[$history]['tanggal'])--}}
                         @if($histories[$history]['tanggal']==$i)
                         @switch($i)
                             @case(1)
@@ -121,7 +119,6 @@
                             data: [
                                 @foreach($utangs as $history =>$data)
                                 {{$utangs[$history]['total']}},
-
                                 @endforeach
                             ]
                         }
@@ -151,9 +148,9 @@
                             }
                         }],
                         yAxes: [{
-                            ticks: {
-                                stepSize: 1000000
-                            },
+                            // ticks: {
+                            //     // stepSize: 10000000
+                            // },
                             display: true,
                             borderDash: [5, 5],
                             gridLines: {

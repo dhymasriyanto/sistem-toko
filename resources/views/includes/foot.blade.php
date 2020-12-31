@@ -42,11 +42,26 @@
 </script>
 
 <script>
-
     $(function() {
+        $.validator.addMethod("greaterThan",
+            function(value, element, params) {
+
+                if (!/Invalid|NaN/.test(new Date(value))) {
+                    return new Date(value) > new Date($(params).val());
+                }
+
+                return isNaN(value) && isNaN($(params).val())
+                    || (Number(value) > Number($(params).val()));
+            },'Tanggal harus lebih dari hari ini.');
         $.validator.addMethod('le', function(value, element, param) {
             return this.optional(element) || value >= +$(param).val();
-        }, 'Uang masih kurang');
+        }, 'Uang masih kurang.');
+        $.validator.addMethod('se', function(value, element, param) {
+            return this.optional(element) || value >= 0;
+        }, 'Angka tidak boleh minus.');
+        $.validator.addMethod('ge', function(value, element, param) {
+            return this.optional(element) || value <= +$(param).val();
+        }, 'Uang berlebih. Anda yakin ini menghutang?');
         // Initialize validation
         $("form.form-uang").validate({
             focusInvalid: false,
@@ -54,9 +69,9 @@
                 "uang": {
                     required: true,
                     number: true,
-                    le:'#total2'
+                    se:"",
+                    le:'#total',
                 },
-
             },
             errorPlacement: function errorPlacement(error, element) {
                 var $parent = $(element).parents(".form-group");
@@ -82,46 +97,17 @@
             }
         });
 
-        $("form#form-uang").validate({
-            focusInvalid: false,
-            rules: {
-                "uang": {
-                    required: true,
-                    number: true,
-                    le:'#total'
-                },
 
-            },
-            errorPlacement: function errorPlacement(error, element) {
-                var $parent = $(element).parents(".form-group");
-                // Do not duplicate errors
-                if ($parent.find(".jquery-validation-error").length) {
-                    return;
-                }
-                $parent.append(
-                    error.addClass("jquery-validation-error small form-text invalid-feedback")
-                );
-            },
-            highlight: function(element) {
-                var $el = $(element);
-                var $parent = $el.parents(".form-group");
-                $el.addClass("is-invalid");
-                // Select2 and Tagsinput
-                // if ($el.hasClass("select2-hidden-accessible") || $el.attr("data-role") === "tagsinput") {
-                //     $el.parent().addClass("is-invalid");
-                // }
-            },
-            unhighlight: function(element) {
-                $(element).parents(".form-group").find(".is-invalid").removeClass("is-invalid");
-            }
-        });
 
         $("form#form-utang").validate({
             focusInvalid: false,
             rules: {
 
                 "dp": {
-                    number: true
+                    required: true,
+                    number: true,
+                    ge:'#total2',
+                    se:""
                 },
                 "nama_penghutang": {
                     required: true
@@ -140,7 +126,8 @@
                     required: true
                 },
                 "tenggat": {
-                    required: true
+                    required: true,
+                    greaterThan: "#tanggal"
                 },
 
             },

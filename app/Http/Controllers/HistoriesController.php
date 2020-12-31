@@ -18,7 +18,7 @@ class HistoriesController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Karyawan']);
     }
 
     public function index()
@@ -32,7 +32,23 @@ class HistoriesController extends Controller
                 'total',
                 'name'
             ));
-        return view('histories.index', compact('histories'));
+        $pengeluaran = DB::table('pengeluaran')
+            ->join('users', 'pengeluaran.id_karyawan', '=', 'users.id')
+            ->join('stuffs', 'pengeluaran.id_barang', '=', 'stuffs.id')
+            ->join('categories', 'stuffs.id_kategori', '=', 'categories.id')
+            ->join('units', 'stuffs.id_satuan', '=', 'units.id')
+            ->get(array(
+                'pengeluaran.id',
+                'tanggal',
+                'pengeluaran',
+                'jumlah',
+                'nama_barang',
+                'harga',
+                'name',
+                'nama_satuan',
+                'nama_kategori'
+            ));
+        return view('histories.index', compact('histories','pengeluaran'));
     }
 
     /**

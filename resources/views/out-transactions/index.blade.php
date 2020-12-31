@@ -60,8 +60,8 @@
                                                 {?>
 
                                                 <option value="{{$keys->item_id}}">
-                                                    {{$keys->item_name}} - Stok
-                                                    : {{$keys->item_stock}}
+                                                    {{$keys->item_name}}
+                                                    : {{$keys->item_stock}} - @money($keys->item_price)
                                                 </option>
 
                                                 {{--                                                    <option value="{{$stock_data[$stuff]['item_id']}}">--}}
@@ -148,14 +148,14 @@
                                         <input hidden name="id_barang[]" value="{{$keys->item_id}}">
                                         <?php
                                         }
+                                        if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
                                         ?>
-
                                         <button class=" my-3 fa-pull-right btn btn-danger"><i class="align-middle"
                                                                                               data-feather="trash"></i><span
                                                 class="align-middle ml-2">Hapus semua</span></button>
                                         <?php
 
-
+}
 
                                         }?>
                                     </form>
@@ -543,9 +543,6 @@
 
         }
 
-
-    </script>
-    <script>
 
     </script>
     <script>

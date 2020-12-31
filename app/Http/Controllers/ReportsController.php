@@ -18,7 +18,7 @@ class ReportsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Pemilik Toko']);
     }
 
     public function index()
@@ -26,13 +26,13 @@ class ReportsController extends Controller
         $tahun=date("Y");
 
         $utangs = DebtHistory::groupBy(DB::raw('MONTH(tanggal_transaksi)'))
-            ->selectRaw('sum(total) as total')
+            ->selectRaw('sum(total) as total,MONTH(tanggal_transaksi) as tanggal')
             ->where(DB::raw('YEAR(tanggal_transaksi)'), '=', $tahun)->get();
         $histories=History::groupBy(DB::raw('MONTH(tanggal_transaksi)'))
         ->selectRaw('sum(total) as total , MONTH(tanggal_transaksi) as tanggal')
         ->where(DB::raw('YEAR(tanggal_transaksi)'),'=',$tahun)->get();
         $pengeluaran=DB::table('pengeluaran')->groupBy(DB::raw('MONTH(tanggal)'))
-            ->selectRaw('sum(pengeluaran) as total')
+            ->selectRaw('sum(pengeluaran) as total, MONTH(tanggal) as tanggal')
             ->where(DB::raw('YEAR(tanggal)'),'=',$tahun)->get();
 
 

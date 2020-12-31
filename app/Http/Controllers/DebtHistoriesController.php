@@ -6,6 +6,7 @@ use App\DebtHistory;
 use App\History;
 use App\Stuff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DebtHistoriesController extends Controller
@@ -17,8 +18,10 @@ class DebtHistoriesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth','role:Karyawan']);
     }
+
+
     public function index()
     {
 //        $debtHistory=DebtHistory::all();
@@ -226,11 +229,13 @@ class DebtHistoriesController extends Controller
 //            $data = array_except($data, ['name', 'price']);
             // create new Order based on Post's data
 //            $order = Order::create($data);
-
+            DB::table('debtors')->where('id', $debtHistory->id_penghutang)->delete();
             DebtHistory::destroy($debtHistory->id);
+            return redirect('/histories/')->withCookie('shopping_cart',"[]",time()-360,'/out-transactions')->with('status', 'Transaksi berhasil');
+
         }
 
-        return redirect('/histories/')->withCookie('shopping_cart',"[]",time()-360,'/out-transactions')->with('status', 'Transaksi berhasil');
+        return redirect('/debt-histories/'.$debtHistory->id)->withCookie('shopping_cart',"[]",time()-360,'/out-transactions')->with('status', 'Transaksi berhasil');
 
     }
 

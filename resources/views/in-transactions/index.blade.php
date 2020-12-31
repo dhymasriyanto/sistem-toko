@@ -21,7 +21,7 @@
                                 <select class="form-control select2" id="id_barang" name="id_barang" required>
                                     <option value="{{null}}" >Pilih barang</option>
                                 @foreach($stuffs as $stuff)
-                                        <option value="{{$stuff->id}}">{{$stuff->nama_barang}}</option>
+                                        <option value="{{$stuff->id}}">{{$stuff->nama_barang}} : {{$stuff->jumlah_stok}} - @money($stuff->harga)</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -48,7 +48,7 @@
                                 @enderror
                             </div>
 
-
+                            <input hidden type="text" name="id_karyawan"  value="{{Auth::user()->id}}">
                             <button type="submit" class="btn btn-primary">Simpan</button>
 
                         </form>
