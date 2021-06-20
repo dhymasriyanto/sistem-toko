@@ -51,12 +51,19 @@ class OutTransactionsController extends Controller
                 'item_stock' => $stuff->jumlah_stok
             );
             $stock_data[] = $item_array;
+            
         }
         $stock_item_data = json_encode($stock_data);
+        // $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
+        // $aaa = Crypt::decryptString($cookie_data2);
+        // $bbb = substr($aaa, 41);
+        // $stock_data = json_decode($bbb, true);
+        // dd($stock_data);
         if (isset($_COOKIE['shopping_cart'])) {
             $cookie_data = stripslashes($_COOKIE['shopping_cart']);
             $aa = Crypt::decryptString($cookie_data);
-            $cart_data = json_decode($aa, true);
+            $bb = substr($aa, 41);
+            $cart_data = json_decode($bb, true);
             if ($cart_data != null) {
                 foreach ($cart_data as $keys => $values) {
                     unset($cart_data[$keys]);
@@ -66,6 +73,7 @@ class OutTransactionsController extends Controller
             }
 
         }
+        // dd($stock_item_data);
         return redirect('/out-transactions')->withCookie('stock_cart', $stock_item_data, time() + (86400 * 30), '/out-transactions');
 
 
@@ -81,7 +89,8 @@ class OutTransactionsController extends Controller
     {
         $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
         $aaa = Crypt::decryptString($cookie_data2);
-        $stock_data = json_decode($aaa, true);
+        $bbb = substr($aaa, 41);
+        $stock_data = json_decode($bbb, true);
 //        $tmp=
 //        dd($request->jumlah);
         foreach ($stock_data as $keys => $values) {
@@ -119,7 +128,8 @@ class OutTransactionsController extends Controller
         if (isset($value)) {
             $cookie_data = stripslashes($_COOKIE['shopping_cart']);
             $aa = Crypt::decryptString($cookie_data);
-            $cart_data = json_decode($aa, true);
+            $bb = substr($aa, 41);
+            $cart_data = json_decode($bb, true);
         } else {
             $cart_data = array();
         }
@@ -213,7 +223,8 @@ class OutTransactionsController extends Controller
 //dd($request->id_barang);
         $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
         $aaa = Crypt::decryptString($cookie_data2);
-        $stock_data = json_decode($aaa, true);
+        $bbb = substr($aaa, 41);
+        $stock_data = json_decode($bbb, true);
 //        dd($stock_data);
 
 
@@ -248,7 +259,8 @@ class OutTransactionsController extends Controller
         if (isset($request->id)) {
             $cookie_data = stripslashes($_COOKIE['shopping_cart']);
             $aa = Crypt::decryptString($cookie_data);
-            $cart_data = json_decode($aa, true);
+            $bb = substr($aa, 41);
+            $cart_data = json_decode($bb, true);
             foreach ($cart_data as $keys => $values) {
                 if ($cart_data[$keys]['item_id'] == $request->id) {
                     unset($cart_data[$keys]);
@@ -263,7 +275,8 @@ class OutTransactionsController extends Controller
             if (isset($_COOKIE['shopping_cart'])) {
                 $cookie_data = stripslashes($_COOKIE['shopping_cart']);
                 $aa = Crypt::decryptString($cookie_data);
-                $cart_data = json_decode($aa, true);
+                $bb = substr($aa, 41);
+                $cart_data = json_decode($bb, true);
                 if ($cart_data != null) {
                     foreach ($cart_data as $keys => $values) {
                         unset($cart_data[$keys]);

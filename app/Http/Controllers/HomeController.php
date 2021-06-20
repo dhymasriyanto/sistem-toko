@@ -56,12 +56,12 @@ class HomeController extends Controller
         }
 
 
-//        foreach ($histories as $history => $data) {
-//            foreach ($pengeluaran as $keluar) {
-//                $result = $histories[$history]['total'] - $keluar->total;
-//                break;
-//            }
-//        }
+    //    foreach ($histories as $history => $data) {
+    //        foreach ($pengeluaran as $keluar) {
+    //            $result = $histories[$history]['total'] - $keluar->total;
+    //            break;
+    //        }
+    //    }
         $utang= null;
 
         $utangs = DebtHistory::groupBy(DB::raw('YEAR(tanggal_transaksi)'))

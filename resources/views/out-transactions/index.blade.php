@@ -54,14 +54,15 @@
                                                 $total2 = 0;
                                                 $cookie_data2 = stripslashes($_COOKIE['stock_cart']);
                                                 $aaa = Crypt::decryptString($cookie_data2);
-                                                $stock_data = json_decode($aaa);
+                                                $bbb = substr($aaa, 41);
+                                                $stock_data = json_decode($bbb, true);
                                                 //                                        dd($cart_data);
-                                                foreach($stock_data as $keys)
+                                                foreach($stock_data as $keys => $values)
                                                 {?>
 
-                                                <option value="{{$keys->item_id}}">
-                                                    {{$keys->item_name}}
-                                                    : {{$keys->item_stock}} - @money($keys->item_price)
+                                                <option value="{{$values["item_id"]}}">
+                                                    {{$values["item_name"]}}
+                                                    : {{$values["item_stock"]}} - @money($values["item_price"])
                                                 </option>
 
                                                 {{--                                                    <option value="{{$stock_data[$stuff]['item_id']}}">--}}
@@ -138,14 +139,15 @@
                                         $total = 0;
                                         $cookie_data = stripslashes($_COOKIE['shopping_cart']);
                                         $aa = Crypt::decryptString($cookie_data);
-                                        $cart_data = json_decode($aa);
+                                        $bb = substr($aa, 41);
+                                        $cart_data = json_decode($bb, true);
                                         //                                        dd($cart_data);
-                                        foreach($cart_data as $keys)
+                                        foreach($cart_data as $keys => $values)
                                         {
                                         //                                            dd($keys->item_name);
                                         ?>
-                                        <input hidden name="jumlah[]" value="{{$keys->item_quantity}}">
-                                        <input hidden name="id_barang[]" value="{{$keys->item_id}}">
+                                        <input hidden name="jumlah[]" value="{{$values["item_quantity"]}}">
+                                        <input hidden name="id_barang[]" value="{{$values["item_id"]}}">
                                         <?php
                                         }
                                         if (isset($_COOKIE["shopping_cart"]) && $test != "[]"){
@@ -187,26 +189,27 @@
                                         $total = 0;
                                         $cookie_data = stripslashes($_COOKIE['shopping_cart']);
                                         $aa = Crypt::decryptString($cookie_data);
-                                        $cart_data = json_decode($aa);
-                                        foreach($cart_data as $keys)
+                                        $bb = substr($aa, 41);
+                                        $cart_data = json_decode($bb, true);
+                                        foreach($cart_data as $keys => $values)
                                         {
                                         ?>
                                         <tr>
-                                            <td>{{$keys->item_name}}</td>
-                                            <td>{{$keys->item_category}}</td>
-                                            <td>{{$keys->item_stock}}</td>
-                                            <td>{{$keys->item_quantity}}</td>
-                                            <td>{{$keys->item_unit}}</td>
-                                            <td>@money($keys->item_price)</td>
-                                            <td>@money($keys->item_quantity * $keys->item_price)</td>
+                                            <td>{{$values["item_name"]}}</td>
+                                            <td>{{$values["item_category"]}}</td>
+                                            <td>{{$values["item_stock"]}}</td>
+                                            <td>{{$values["item_quantity"]}}</td>
+                                            <td>{{$values["item_unit"]}}</td>
+                                            <td>@money($values["item_price"])</td>
+                                            <td>@money($values["item_quantity"] * $values["item_price"])</td>
                                             <td>
-                                                <form action="/out-transactions/{{$keys->item_id}}" method="post"
+                                                <form action="/out-transactions/{{$values["item_id"]}}" method="post"
                                                       class="d-inline">
                                                     @method('delete')
                                                     @csrf
 
-                                                    <input hidden name="jumlah[]" value="{{$keys->item_quantity}}">
-                                                    <input hidden name="id_barang[]" value="{{$keys->item_id}}">
+                                                    <input hidden name="jumlah[]" value="{{$values["item_quantity"]}}">
+                                                    <input hidden name="id_barang[]" value="{{$values["item_id"]}}">
                                                     <button class=" btn btn-link"><i style="color: red"
                                                                                      class="align-middle"
                                                                                      data-feather="delete"></i></button>
@@ -214,7 +217,7 @@
                                             {{--                                                <a href=""><span class="text-danger"></span></a></td>--}}
                                         </tr>
                                         <?php
-                                        $total = $total + ($keys->item_quantity * $keys->item_price);
+                                        $total = $total + ($values["item_quantity"] * $values["item_price"]);
                                         }
                                         ?>
                                         <tr>
@@ -326,16 +329,17 @@
 
                         $cookie_data = stripslashes($_COOKIE['shopping_cart']);
                         $aa = Crypt::decryptString($cookie_data);
-                        $cart_data = json_decode($aa);
+                        $bb = substr($aa, 41);
+                        $cart_data = json_decode($bb, true);
 
-                        foreach($cart_data as $keys){
+                        foreach($cart_data as $keys => $values){
                         ?>
 
-                        <input hidden id="id{{$keys->item_id}}" type="text" name="id[]" value="{{$keys->item_id}}">
-                        <input hidden id="jml{{$keys->item_id}}" type="text" name="jml[]"
-                               value="{{$keys->item_quantity}}">
-                        <input hidden id="subtotal{{$keys->item_id}}" type="text" name="subtotal[]"
-                               value="{{$keys->item_quantity*$keys->item_price}}">
+                        <input hidden id="id{{$values["item_id"]}}" type="text" name="id[]" value="{{$values["item_id"]}}">
+                        <input hidden id="jml{{$values["item_id"]}}" type="text" name="jml[]"
+                               value="{{$values["item_quantity"]}}">
+                        <input hidden id="subtotal{{$values["item_id"]}}" type="text" name="subtotal[]"
+                               value="{{$values["item_quantity"]*$values["item_price"]}}">
                         <input hidden id="total" type="text" name="total" value="{{$total}}">
 
                         <?php
@@ -488,16 +492,17 @@
 
                         $cookie_data = stripslashes($_COOKIE['shopping_cart']);
                         $aa = Crypt::decryptString($cookie_data);
-                        $cart_data = json_decode($aa);
+                        $bb = substr($aa, 41);
+                        $cart_data = json_decode($bb, true);
 
-                        foreach($cart_data as $keys){
+                        foreach($cart_data as $keys => $values){
                         ?>
 
-                        <input hidden id="id{{$keys->item_id}}" type="text" name="id[]" value="{{$keys->item_id}}">
-                        <input hidden id="jml{{$keys->item_id}}" type="text" name="jml[]"
-                               value="{{$keys->item_quantity}}">
-                        <input hidden id="subtotal{{$keys->item_id}}" type="text" name="subtotal[]"
-                               value="{{$keys->item_quantity*$keys->item_price}}">
+                        <input hidden id="id{{$values["item_id"]}}" type="text" name="id[]" value="{{$values["item_id"]}}">
+                        <input hidden id="jml{{$values["item_id"]}}" type="text" name="jml[]"
+                               value="{{$values["item_quantity"]}}">
+                        <input hidden id="subtotal{{$values["item_id"]}}" type="text" name="subtotal[]"
+                               value="{{$values["item_quantity"]*$values["item_price"]}}">
                         <input hidden id="total2" type="text" name="total" value="{{$total}}">
 
                         <?php
