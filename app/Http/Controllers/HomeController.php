@@ -65,7 +65,7 @@ class HomeController extends Controller
         $utang= null;
 
         $utangs = DebtHistory::groupBy(DB::raw('YEAR(tanggal_transaksi)'))
-            ->selectRaw('sum(total) as total')
+            ->selectRaw('sum(sisa) as total')
             ->where(DB::raw('YEAR(tanggal_transaksi)'), '=', $tahun)->get();
 
 //        dd($utangs);

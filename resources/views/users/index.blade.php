@@ -19,7 +19,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Username</th>
-                                <th scope="col">Grup</th>
+                                {{-- <th scope="col">Grup</th> --}}
                                 <th scope="col">Level Akses</th>
                                 <th scope="col">Aksi</th>
                             </tr>
@@ -30,7 +30,7 @@
                                     <td scope="row">{{$loop->iteration}}</td>
                                     <td>{{$user->name}}</td>
                                     <td>{{$user->username}}</td>
-                                    <td>{{$user->nama_grup}}</td>
+                                    {{-- <td>{{$user->nama_grup}}</td> --}}
                                     <td>
                                         @if($user->level_akses=='Pemilik Toko')
                                         <span class="badge badge-primary">{{$user->level_akses}}</span>

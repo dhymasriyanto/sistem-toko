@@ -17,6 +17,7 @@ class CreatePengeluaranTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('pengeluaran');
             $table->date('tanggal');
+            $table->bigInteger('jumlah');
             $table->timestamps();
         });
     }

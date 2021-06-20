@@ -39,7 +39,7 @@
                                 @enderror
                             </div>
                             <input hidden type="text" name="level_akses" value="Karyawan">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="id_grup">Grup</label>
                                 <select class="form-control select2" id="id_grup" name="id_grup" required>
                                     <option value="{{null}}" >Pilih grup</option>
@@ -48,7 +48,7 @@
                                         <option value="{{$group->id}}">{{$group->nama_grup}}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 <input id="password" type="password"

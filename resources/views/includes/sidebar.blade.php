@@ -24,12 +24,12 @@
                         <span class="align-middle">Karyawan</span>
                     </a>
                 </li>
-                <li class="sidebar-item {{ Request::is('groups')  ? 'active' : '' }}">
+                {{-- <li class="sidebar-item {{ Request::is('groups')  ? 'active' : '' }}">
                     <a href="{{url('/groups')}}" class="sidebar-link">
                         <i class="align-middle" data-feather="users"></i>
                         <span class="align-middle">Grup</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="sidebar-item ">
                     <a href="#persediaan" data-toggle="collapse" class="sidebar-link collapsed">
                         <i class="align-middle" data-feather="folder"></i>
