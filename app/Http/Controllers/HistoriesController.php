@@ -32,6 +32,23 @@ class HistoriesController extends Controller
                 'total',
                 'name'
             ));
+        $months = DB::table('transactions')
+        ->join('users', 'transactions.id_karyawan', '=', 'users.id')
+        ->whereMonth('tanggal_transaksi', '=', '10')
+        ->get(array(
+            'transactions.id',
+            'no_faktur',
+            'tanggal_transaksi',
+            'total',
+            'name'
+        ));
+
+        $total_semua = History::groupBy(DB::raw('MONTH(tanggal_transaksi)'))
+            ->selectRaw('sum(total) as total')
+            ->where(DB::raw('MONTH(tanggal_transaksi)'), '=', '10')->get();
+            foreach ($total_semua as $history => $data) {
+                $result = $total_semua[$history]['total'];
+            }
         $pengeluaran = DB::table('pengeluaran')
             ->join('users', 'pengeluaran.id_karyawan', '=', 'users.id')
             ->join('stuffs', 'pengeluaran.id_barang', '=', 'stuffs.id')
@@ -48,7 +65,8 @@ class HistoriesController extends Controller
                 'nama_satuan',
                 'nama_kategori'
             ));
-        return view('histories.index', compact('histories','pengeluaran'));
+            // dd($result);
+        return view('histories.index', compact('histories','pengeluaran', 'months', 'result'));
     }
 
     /**

@@ -284,7 +284,7 @@
                     //                    dd($waktu);
                     ?>
                     @csrf
-                    <div class="modal-body m-3">
+                    <div class="modal-body m-3">,
                         <input hidden id="id_karyawan" type="text" name="id_karyawan" value="{{Auth::user()->id}}">
                         <input hidden id="no_faktur" type="text" name="no_faktur"
                                value="TRNS{{Auth::user()->id}}{{$waktu}}{{$nomer}}">
